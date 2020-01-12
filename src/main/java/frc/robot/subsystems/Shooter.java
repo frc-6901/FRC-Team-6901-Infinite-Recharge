@@ -5,16 +5,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-    private Spark shooterMotor;
+    private Spark shooterMotor1;
+    //private Spark shooterMotor2;
+
   /**
    * Creates a new ExampleSubsystem.
    */
   public Shooter() {
-    shooterMotor = new Spark(Constants.shooterPort);
+    shooterMotor1 = new Spark(Constants.shooterPort1);
+    //shooterMotor2 = new Spark(Constants.shooterPort2);
   }
 
   public void runShooter(double power) {
-      shooterMotor.set(power);
+      shooterMotor1.set(power);
+      //shooterMotor2.set(power);
   }
 
   
