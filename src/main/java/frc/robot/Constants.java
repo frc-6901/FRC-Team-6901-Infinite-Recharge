@@ -35,9 +35,9 @@ public final class Constants {
       public static final double kAreaCross = 0.02482866647; // m^2 of cross section
       public static final double kTerminalVelocity = 14.5823998377; //m/s
       
-      //dynamic constancts
+      //dynamic constants
       public static final double kLaunchHeight = 0.0; //0 m
-      public static final double kLaunchAlpha = Math.PI/4; //radians from horizontal
+      public static final double kLaunchAlpha = Math.PI/4.0; //radians from horizontal
 
       public static final double kFlyWheelRadius = 0.0381; // m;
 
