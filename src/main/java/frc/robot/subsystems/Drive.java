@@ -131,7 +131,9 @@ public class Drive extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (getDistances()[1] + getDistances()[2]) / 2.0;
+    double[] distances = getDistances();
+    
+    return (distances[0] + distances[1]) / 2.0;
   }
 
 
@@ -160,6 +162,7 @@ public class Drive extends SubsystemBase {
     return Math.IEEEremainder(mGyro.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+  // TODO maybe add a cleaner data structure
   public int[] getEncoderValues() {
       int[] encoderValues = new int[4];
       
