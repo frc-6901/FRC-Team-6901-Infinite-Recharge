@@ -15,7 +15,7 @@ public class Pigeon {
         if (state == PigeonState.Ready) {
             double[] ypr = new double[3];
             pigeon.getYawPitchRoll(ypr);
-            return -ypr[0];
+            return ypr[0];
         } else {
             System.out.println("Pigeon is not ready!");
             return 0;

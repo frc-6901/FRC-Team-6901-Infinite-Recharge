@@ -24,6 +24,13 @@ public final class Constants {
     public static final int shooterPort2 = 2;
     public static final int controllerPort = 0;
 
+    public static final class ClimberConstants {
+      public static final int kClimberPort1 = 2;
+      public static final int kClimberPort2 = 6;
+      public static final int kClimberPort3 = 11;
+      public static final int kClimberPort4 = 4;
+
+    }
     //TODO Modify constants
     public static final class ShooterConstants{
       
