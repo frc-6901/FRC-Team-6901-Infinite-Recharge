@@ -37,7 +37,8 @@ public class ShootBallCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mShooter.runShooter(-.8);
+    mShooter.runShooter(-.75);
+    //System.out.println("Shooting ball");
   }
 
   // Called once the command ends or is interrupted.

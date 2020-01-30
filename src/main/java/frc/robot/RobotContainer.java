@@ -56,9 +56,9 @@ public class RobotContainer {
   private final Shooter mShooter = new Shooter();
   private final ShootBallCommand mShootBall = new ShootBallCommand(mShooter);
 
-  // private final Climb mClimber = new Climb();
-  // private final ClimbDownCommand mClimbDown = new ClimbDownCommand(mClimber);
-  // private final ClimbUpCommand mClimbUp = new ClimbUpCommand(mClimber);
+  //  private final Climb mClimber = new Climb();
+  //  private final ClimbDownCommand mClimbDown = new ClimbDownCommand(mClimber);
+  //  private final ClimbUpCommand mClimbUp = new ClimbUpCommand(mClimber);
   
   //private final Drive m_robotDrive = new Drive(); 
 
@@ -81,14 +81,14 @@ public class RobotContainer {
     
      XboxController controller = new XboxController(Constants.controllerPort);
      
-     JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
-     aButton.whenHeld(mShootBall);
+    JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
+    aButton.whenHeld(mShootBall);
 
      
-    //  JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
-    //  JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
-    //  leftBumper.whenHeld(mClimbUp);
-    //  rightBumper.whenHeld(mClimbDown);     
+    // JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
+    // JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
+    // leftBumper.whenHeld(mClimbUp);
+    // rightBumper.whenHeld(mClimbDown);     
   }
 
 
