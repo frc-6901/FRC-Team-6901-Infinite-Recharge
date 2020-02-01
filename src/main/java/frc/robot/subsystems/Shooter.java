@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANError;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.PWMSparkMax;
 import edu.wpi.first.wpilibj.Spark;
@@ -12,24 +15,34 @@ import frc.robot.Constants;
 //TODO Integrate sparks onto CAN and figure out velocity 
 public class Shooter extends SubsystemBase {
     private SpeedControllerGroup shooterGroup;
-    private PWMSparkMax shooterMotor1;
-    private PWMSparkMax shooterMotor2;
+    private CANSparkMax shooterMotor1;
+    private CANSparkMax shooterMotor2;
+    // TODO Figure out Velocity PID, Hook up to smart dash
     //private Spark shooterMotor2;
 
   /**
    * Creates a new ExampleSubsystem.
    */
   public Shooter() {
-    shooterMotor1 = new PWMSparkMax(Constants.shooterPort1);
-    shooterMotor2 = new PWMSparkMax(Constants.shooterPort2);
-    shooterGroup = new SpeedControllerGroup(shooterMotor1, shooterMotor2);
+    shooterMotor1 = new CANSparkMax(Constants.shooterPort1, MotorType.kBrushless);
+    shooterMotor2 = new CANSparkMax(Constants.shooterPort2, MotorType.kBrushless);
+    CANError status = shooterMotor2.follow(shooterMotor1);
+    if (status == CANError.kOk) {
+      System.out.println("Shooter Follower setup successfully!");
+    } else {
+      System.out.println("Shooter Follower Failed");
+    }
   }
 
-  public void runShooter(double power) {
-      shooterGroup.set(power);
+  
+
+  public void runManualShooter(double power) {
+      shooterMotor1.set(power);
       //shooterMotor2.set(power);
   }
 
+
+  
   
   @Override
   public void periodic() {

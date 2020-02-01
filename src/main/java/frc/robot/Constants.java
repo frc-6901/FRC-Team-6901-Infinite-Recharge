@@ -47,6 +47,8 @@ public final class Constants {
       public static final double kLaunchAlpha = Math.PI/4.0; //radians from horizontal
 
       public static final double kFlyWheelRadius = 0.0381; // m;
+      
+      public static final double kShooterKp = 0;
 
     }
     //TODO Modify Constants and also change inner classes
