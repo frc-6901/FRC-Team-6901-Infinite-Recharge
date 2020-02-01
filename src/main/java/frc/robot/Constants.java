@@ -24,6 +24,14 @@ public final class Constants {
     public static final int shooterPort2 = 2;
     public static final int controllerPort = 0;
 
+    public static final class LimelightConstants {
+      public static final double kLimelightHeight = 0;
+      public static final double kLimelightAngle = 0;
+      public static final double kTargetHeightMeters = 0;
+      public static final double kXThreshold = 0;
+
+    }
+
     public static final class ClimberConstants {
       public static final int kClimberPort1 = 2;
       public static final int kClimberPort2 = 6;
@@ -51,6 +59,11 @@ public final class Constants {
     }
     //TODO Modify Constants and also change inner classes
     public static final class DriveConstants {
+
+      //Limelight tuning
+      public static final double kP = 0;
+      public static final double kD = 0;
+
       public static final int kLeftMotor1Port = 1;
       public static final int kLeftMotor2Port = 1;
       public static final int kRightMotor1Port = 2;
