@@ -58,6 +58,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("P Gain", kP);
     SmartDashboard.putNumber("Max Output", ShooterConstants.kMaxOutput);
     SmartDashboard.putNumber("Min Output", ShooterConstants.kMinOutput);
+    SmartDashboard.putNumber("Velocity Setpoint", 0);
 
   }
 
@@ -81,21 +82,22 @@ public class Shooter extends SubsystemBase {
 
   // CLOSED LOOP METHODS
 
-  public void RPMShooter(int RPM) {
-
+  public void RPMShooter(double RPM) {
+    SmartDashboard.putNumber("Velocity Setpoint", RPM);
     mBottomPID.setReference(RPM, ControlType.kVelocity);
     mTopPID.setReference(RPM, ControlType.kVelocity);
 
   }
 
-  public void variableRPMShooter(int RPM) {
+  public void variableRPMShooter(double RPM) {
 
+    SmartDashboard.putNumber("Velocity Setpoint", RPM);
     mBottomPID.setReference(RPM, ControlType.kVelocity);
     mTopPID.setReference(RPM - ShooterConstants.kRPMDifference, ControlType.kVelocity);
   }
 
-  public void tuningRPMShooter(int RPMTarget) {
-
+  public void tuningRPMShooter(double defaultRPM) {
+    double RPMTarget = SmartDashboard.getNumber("Velocity Setpoint", defaultRPM);
     double p = SmartDashboard.getNumber("P Gain", 0);
     double max = SmartDashboard.getNumber("Max Output", 0);
     double min = SmartDashboard.getNumber("Min Output", 0);
