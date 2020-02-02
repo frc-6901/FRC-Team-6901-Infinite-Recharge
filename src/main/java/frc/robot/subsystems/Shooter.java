@@ -26,10 +26,17 @@ public class Shooter extends SubsystemBase {
   }
 
   public void runShooter(double power) {
-      shooterGroup.set(power);
-      //shooterMotor2.set(power);
+    shooterMotor1.set(power);  
+    //shooterGroup.set(power);
+    shooterMotor2.set(power-.1);
   }
 
+  public void stopShooer() {
+    shooterMotor1.set(0);  
+    //shooterGroup.set(power);
+    shooterMotor2.set(0);
+
+  }
   
   @Override
   public void periodic() {

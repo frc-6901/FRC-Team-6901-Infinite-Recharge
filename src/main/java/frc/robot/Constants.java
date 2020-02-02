@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final int shooterPort1 = 3;
-    public static final int shooterPort2 = 2;
+    public static final int shooterPort1 = 7;
+    public static final int shooterPort2 = 8;
     public static final int controllerPort = 0;
 
     public static final class ClimberConstants {
