@@ -48,7 +48,14 @@ public final class Constants {
 
       public static final double kFlyWheelRadius = 0.0381; // m;
       
-      public static final double kShooterKp = 0;
+      // TODO Tune P!
+      public static final double kP = 5e-5; 
+
+      public static final double kMaxOutput = 1; 
+      public static final double kMinOutput = -1;
+      //public static final double maxRPM = 5700;
+
+      public static final int kRPMDifference = 0;
 
     }
     //TODO Modify Constants and also change inner classes

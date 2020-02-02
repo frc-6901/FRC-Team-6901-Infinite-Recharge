@@ -37,14 +37,15 @@ public class ShootBallCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mShooter.runManualShooter(-.75);
+    mShooter.tuningRPMShooter(5000);
+
     //System.out.println("Shooting ball");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      mShooter.runManualShooter(0);
+      mShooter.stopShooter();
   }
 
   // Returns true when the command should end.
