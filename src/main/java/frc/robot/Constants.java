@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import frc.Util.PolynomialRegression;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -55,6 +56,24 @@ public final class Constants {
       public static final double kLaunchAlpha = Math.PI/4.0; //radians from horizontal
 
       public static final double kFlyWheelRadius = 0.0381; // m;
+
+      public static PolynomialRegression kPolynomial;
+      
+      public static double[][] kDistanceRPMTable = {
+        {0, 0}
+      };
+
+      static {
+        double[] x = new double[kDistanceRPMTable.length];
+        double[] y = new double[kDistanceRPMTable.length];
+        for (int i = 0; i < kDistanceRPMTable.length; i++) {
+          x[i] = kDistanceRPMTable[i][0];
+          y[i] = kDistanceRPMTable[i][1];
+        }
+        kPolynomial = new PolynomialRegression(x, y, 2);
+      }
+      
+      public static final double kDefaultRPM = 0;      
 
     }
     //TODO Modify Constants and also change inner classes

@@ -5,12 +5,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.ShooterConstants;
 
 public class VisionController extends SubsystemBase{
 
     private double[] limelightValues = new double[2];
     private boolean seesTarget = false;
     private double prevError = 0;
+
+    private VisionController mInstance = null;
+
+    public VisionController getInstance() {
+        if (mInstance == null) {
+            mInstance = new VisionController();
+        }
+
+        return mInstance;
+    }
+    private VisionController() {
+        
+        
+    }
 
     private void updateValues() {
         seesTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1;
@@ -57,12 +72,15 @@ public class VisionController extends SubsystemBase{
 
     public int getRPM() {
         // TODO Figure out distance and polynomial regression
-        return 0;
+        double distance = estimateDistance();
+        return (int) ShooterConstants.kPolynomial.predict(distance);
     }
 
     @Override
     public void periodic() {
         updateValues();
+        SmartDashboard.putBoolean("Sees Target", seesTarget);
+        SmartDashboard.putNumber("Target X Error", limelightValues[0]);
 
     }
 
