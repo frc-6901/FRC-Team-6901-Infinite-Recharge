@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 
 //TODO Integrate sparks onto CAN and figure out velocity 
 public class Shooter extends SubsystemBase {
@@ -19,8 +20,8 @@ public class Shooter extends SubsystemBase {
    * Sets up the shooter with Spark Maxes plugged into PWM
    */
   public Shooter() {
-    shooterMotor1 = new PWMSparkMax(Constants.shooterPort1);
-    shooterMotor2 = new PWMSparkMax(Constants.shooterPort2);
+    shooterMotor1 = new PWMSparkMax(ShooterConstants.shooterPort1);
+    shooterMotor2 = new PWMSparkMax(ShooterConstants.shooterPort2);
     
   }
 
