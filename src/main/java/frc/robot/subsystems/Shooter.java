@@ -11,29 +11,28 @@ import frc.robot.Constants;
 
 //TODO Integrate sparks onto CAN and figure out velocity 
 public class Shooter extends SubsystemBase {
-    private SpeedControllerGroup shooterGroup;
     private PWMSparkMax shooterMotor1;
     private PWMSparkMax shooterMotor2;
     //private Spark shooterMotor2;
 
   /**
-   * Creates a new ExampleSubsystem.
+   * Sets up the shooter with Spark Maxes plugged into PWM
    */
   public Shooter() {
     shooterMotor1 = new PWMSparkMax(Constants.shooterPort1);
     shooterMotor2 = new PWMSparkMax(Constants.shooterPort2);
-    shooterGroup = new SpeedControllerGroup(shooterMotor1, shooterMotor2);
+    
   }
 
   public void runShooter(double power) {
+    // Different speeds for spin
     shooterMotor1.set(power);  
-    //shooterGroup.set(power);
-    shooterMotor2.set(power-.1);
+    shooterMotor2.set(power-.1); 
+    
   }
 
   public void stopShooer() {
     shooterMotor1.set(0);  
-    //shooterGroup.set(power);
     shooterMotor2.set(0);
 
   }
