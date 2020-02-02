@@ -33,21 +33,7 @@ public final class Constants {
     }
     //TODO Modify constants
     public static final class ShooterConstants{
-      
-      //static constants
-      public static final double kAccelGravity = 9.8; //m/s^2
-      public static final double kDragCoefficient = 0.5; //predetermined constant
-      public static final double kBallMass = 0.141748; //kg
-      public static final double kDensityAir = 1.225; //kg/m^3 at 15C, sea level
-      public static final double kAreaCross = 0.02482866647; // m^2 of cross section
-      public static final double kTerminalVelocity = 14.5823998377; //m/s
-      
-      //dynamic constants
-      public static final double kLaunchHeight = 0.0; //0 m
-      public static final double kLaunchAlpha = Math.PI/4.0; //radians from horizontal
 
-      public static final double kFlyWheelRadius = 0.0381; // m;
-      
       // TODO Tune P!
       public static final double kP = 5e-5; 
 
