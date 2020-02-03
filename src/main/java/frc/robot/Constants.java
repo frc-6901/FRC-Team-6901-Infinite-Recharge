@@ -89,6 +89,9 @@ public final class Constants {
   
       // Example value only - as above, this must be tuned for your drive!
       public static final double kPDriveVel = .00274;
+
+      public static final double kDefaultLinearVelocity = 0;
+      public static final double kDefaultAngularVelocity = 0;
     }
 
     public static final class AutoConstants {

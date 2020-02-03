@@ -1,18 +1,25 @@
 package frc.robot.subsystems;
 
+import java.util.HashMap;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 
 public class Drive extends SubsystemBase {
@@ -29,6 +36,8 @@ public class Drive extends SubsystemBase {
   private final SpeedControllerGroup m_rightMotors =
       new SpeedControllerGroup(mRightMotorMaster, mRightMotorSlave);
 
+  private final RamseteController mPathController = new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta);
+  private DifferentialDriveWheelSpeeds mWheelSpeeds = new DifferentialDriveWheelSpeeds(); 
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
@@ -44,6 +53,16 @@ public class Drive extends SubsystemBase {
    * Creates a new DriveSubsystem.
    */
   public Drive() {
+
+    //TODO Config Drive for TALON SRX VELOCITY CONTROL
+    mRightMotorMaster.configFactoryDefault();
+    mLeftMotorMaster.configFactoryDefault();
+
+    mLeftMotorSlave.configFactoryDefault();
+    mRightMotorSlave.configFactoryDefault();
+
+    mLeftMotorSlave.follow(mLeftMotorMaster);
+    mRightMotorSlave.follow(mRightMotorMaster);
 
     mRightMotorMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     mLeftMotorMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
@@ -64,9 +83,11 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("Left Encoder", encoderDistances[1]);
     SmartDashboard.putNumber("Right Encoder", encoderDistances[0]);
     SmartDashboard.putNumber("Heading", heading);
-    
-
+    SmartDashboard.putString("Wheel Speeds", getWheelSpeeds().toString());
   }
+
+
+
 
   /**
    * Returns the currently-estimated pose of the robot.
@@ -83,7 +104,9 @@ public class Drive extends SubsystemBase {
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(getEncoderValues()[3], getEncoderValues()[1]);
+    double[] velocities = getVelocities();
+
+    return new DifferentialDriveWheelSpeeds(velocities[1], velocities[0]);
   }
 
   /**
@@ -162,24 +185,32 @@ public class Drive extends SubsystemBase {
     return Math.IEEEremainder(mGyro.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+
+
   // TODO maybe add a cleaner data structure
-  public int[] getEncoderValues() {
-      int[] encoderValues = new int[4];
+  public int[] getEncoderPositions() {
+      int[] encoderValues = new int[2];
       
       // position 1
       encoderValues[0] = -mRightMotorMaster.getSelectedSensorPosition();
-      encoderValues[1] = -mRightMotorMaster.getSelectedSensorVelocity();
-      // position 2
-      encoderValues[2] = mLeftMotorMaster.getSelectedSensorPosition();
-      encoderValues[3] = mLeftMotorMaster.getSelectedSensorVelocity();
+      encoderValues[1] = mLeftMotorMaster.getSelectedSensorPosition();
       return encoderValues;
   }
 
+  public double[] getVelocities() {
+
+      double[] velocities = new double[2];
+
+      velocities[0] =  -mRightMotorMaster.getSelectedSensorVelocity() * 10 * DriveConstants.kEncoderDistancePerPulse;
+      velocities[1] = mLeftMotorMaster.getSelectedSensorVelocity() * 10 * DriveConstants.kEncoderDistancePerPulse;
+      return velocities;
+    }
+
   public double[] getDistances() {
       double[] distance = new double[2];
-      int[] encoderValues = getEncoderValues();
+      int[] encoderValues = getEncoderPositions();
       distance[0] = encoderValues[0] * DriveConstants.kEncoderDistancePerPulse;
-      distance[1] = encoderValues[2] * DriveConstants.kEncoderDistancePerPulse;
+      distance[1] = encoderValues[1] * DriveConstants.kEncoderDistancePerPulse;
       return distance;
       
   }
