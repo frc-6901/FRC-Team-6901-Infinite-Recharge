@@ -32,7 +32,7 @@ public class TurnToTarget extends CommandBase {
         output = mVisionController.getDriveOutput(DriveConstants.kP, DriveConstants.kD);
       }
        
-      mDrive.tankDriveVolts(output, -output);
+      mDrive.arcadeDrive(0, output);
   }
 
   // Called once the command ends or is interrupted.
