@@ -79,7 +79,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-     XboxController controller = new XboxController(Constants.controllerPort);
+     XboxController controller = new XboxController(ControllerConstants.controllerPort);
      
     JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
     aButton.whenHeld(mShootBall);
