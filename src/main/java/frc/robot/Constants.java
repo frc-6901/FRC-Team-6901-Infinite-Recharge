@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final int shooterPort1 = 3;
+    public static final int shooterPort1 = 1;
     public static final int shooterPort2 = 2;
     public static final int controllerPort = 0;
 
@@ -35,10 +35,14 @@ public final class Constants {
     public static final class ShooterConstants{
 
       // TODO Tune P!
-      public static final double kP = 5e-5; 
-
+      public static final double kP = 0.00005; 
+      public static final double kI = 0.0000001;
+      public static final double kD = 0;
+      public static final double kF = 0.00017;
       public static final double kMaxOutput = 1; 
       public static final double kMinOutput = -1;
+
+
       //public static final double maxRPM = 5700;
 
       public static final int kRPMDifference = 0;
