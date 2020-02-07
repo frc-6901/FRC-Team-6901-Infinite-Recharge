@@ -19,9 +19,7 @@ public class Shooter extends SubsystemBase {
     private CANSparkMax mTopMotor;
     private CANEncoder mBottomEncoder, mTopEncoder;
     private CANPIDController mBottomPID, mTopPID;
-    //private double kP;
 
-    //private Spark shooterMotor2;
 
   /**
    * Creates Shooter Subsystem.
@@ -29,8 +27,8 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
 
     // Motor Setup
-    mBottomMotor = new CANSparkMax(Constants.shooterPort1, MotorType.kBrushless);
-    mTopMotor = new CANSparkMax(Constants.shooterPort2, MotorType.kBrushless);
+    mBottomMotor = new CANSparkMax(ShooterConstants.kShooterIdBottom, MotorType.kBrushless);
+    mTopMotor = new CANSparkMax(ShooterConstants.kShooterIdTop, MotorType.kBrushless);
     
     // Makes sure if it was successful
     resetMotors();
@@ -70,6 +68,7 @@ public class Shooter extends SubsystemBase {
     CANError bottomMotorStatus = mBottomMotor.restoreFactoryDefaults();
     CANError topMotorStatus = mTopMotor.restoreFactoryDefaults();
 
+    // Makes sure if the factory resets worked
     if (bottomMotorStatus != CANError.kOk) {
       System.out.println("Bottom Shooter motor failed!" + bottomMotorStatus);
     }
@@ -79,6 +78,8 @@ public class Shooter extends SubsystemBase {
     }
   }
 
+
+  // Makes sure if the idlemode setting worked
   private void setIdleMode(CANSparkMax.IdleMode idleMode) {
     CANError bottomMotorStatus = mBottomMotor.setIdleMode(idleMode);
     CANError topMotorStatus = mTopMotor.setIdleMode(idleMode);
@@ -124,6 +125,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Velocity Setpoint", RPM);
     mBottomPID.setReference(RPM, ControlType.kVelocity);
     
+    // Reduces RPM while maintaining signs
     double RPM2 = Math.abs(RPM) - ShooterConstants.kRPMDifference;
     if (RPM2 < 0) {
       RPM2 *= -1;
@@ -131,6 +133,7 @@ public class Shooter extends SubsystemBase {
     mTopPID.setReference(RPM2, ControlType.kVelocity);
   }
 
+  // This is to facilitate the empirical discover of the necessary RPM for a certain condition 
   public void tuningRPMShooter(double defaultRPM) {
     double RPMTarget = SmartDashboard.getNumber("Velocity Setpoint", defaultRPM);
 
@@ -143,7 +146,7 @@ public class Shooter extends SubsystemBase {
   
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // Mostly to update numbers
     SmartDashboard.putNumber("Bottom Shooter RPM", mBottomEncoder.getVelocity());
     SmartDashboard.putNumber("Top Shooter RPM", mTopEncoder.getVelocity());
   }
