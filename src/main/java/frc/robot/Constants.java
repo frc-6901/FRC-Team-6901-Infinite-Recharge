@@ -32,7 +32,7 @@ public final class Constants {
     public static final int kClimberPort4 = 4;
 
   }
-    //TODO Modify constants
+
   public static final class ShooterConstants{
     //Ports
     public static final int kShooterIdBottom = 1;
@@ -46,8 +46,9 @@ public final class Constants {
     public static final double kMaxOutput = 1; 
     public static final double kMinOutput = -1;
 
-    //Additional stuff
+    // RPM Values
     public static final int kRPMDifference = 0;
+    public static final int kDefaultRPM = -1000;
 
   }
     //TODO Modify Constants and also change inner classes

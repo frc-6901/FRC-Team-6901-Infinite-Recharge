@@ -10,7 +10,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
 
  
@@ -39,7 +38,7 @@ public class Shooter extends SubsystemBase {
     mBottomEncoder = mBottomMotor.getEncoder();
 
     mBottomPID = mBottomMotor.getPIDController();
-    mTopPID = mBottomMotor.getPIDController();
+    mTopPID = mTopMotor.getPIDController();
 
 
     // Sets the PID Values
@@ -53,7 +52,7 @@ public class Shooter extends SubsystemBase {
     mTopPID.setI(ShooterConstants.kI);
     mTopPID.setD(ShooterConstants.kD);
     mTopPID.setFF(ShooterConstants.kF);
-    mTopPID.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput, 0);
+    mTopPID.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
     
 
 
@@ -137,8 +136,7 @@ public class Shooter extends SubsystemBase {
   public void tuningRPMShooter(double defaultRPM) {
     double RPMTarget = SmartDashboard.getNumber("Velocity Setpoint", defaultRPM);
 
-    mBottomPID.setReference(RPMTarget, ControlType.kVelocity);
-    mTopPID.setReference(RPMTarget, ControlType.kVelocity);
+    RPMShooter(RPMTarget);
   }
 
 
