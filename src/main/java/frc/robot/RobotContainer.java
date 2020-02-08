@@ -17,7 +17,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ClimbDownCommand;
 import frc.robot.commands.ClimbUpCommand;
 import frc.robot.commands.ShootBallCommand;
-
+import frc.robot.commands.TuningShootBall;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -54,7 +54,7 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   private final Shooter mShooter = new Shooter();
-  private final ShootBallCommand mShootBall = new ShootBallCommand(mShooter);
+  private final TuningShootBall mShootBall = new TuningShootBall(mShooter);
 
   //  private final Climb mClimber = new Climb();
   //  private final ClimbDownCommand mClimbDown = new ClimbDownCommand(mClimber);
