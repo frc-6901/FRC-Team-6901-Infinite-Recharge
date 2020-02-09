@@ -22,6 +22,6 @@ public class Indexer extends SubsystemBase {
 
     public void runIndexer(double power) {
         mIndexerMotor1.set(ControlMode.PercentOutput, power);
-        mIndexerMotor2.set(ControlMode.PercentOutput, -power);
+        mIndexerMotor2.set(ControlMode.PercentOutput, power);
     }
 }
