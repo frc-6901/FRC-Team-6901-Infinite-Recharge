@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -31,6 +32,12 @@ public class Wrist extends SubsystemBase {
     }
 
     // TODO Figure out how to use absolute value
+
+    /** Open Loop Methods */
+
+    public void moveWrist(double power) {
+        mWristMotor.set(ControlMode.PercentOutput, power);
+    }
 
     @Override
     public void periodic() {

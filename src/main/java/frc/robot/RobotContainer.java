@@ -18,10 +18,13 @@ import frc.robot.commands.ClimbDownCommand;
 import frc.robot.commands.ClimbUpCommand;
 import frc.robot.commands.ShootBallCommand;
 import frc.robot.commands.TuningShootBall;
+import frc.robot.commands.WristDown;
+import frc.robot.commands.WristUp;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Wrist;
 
 import java.util.List;
 
@@ -62,6 +65,9 @@ public class RobotContainer {
   
   //private final Drive m_robotDrive = new Drive(); 
 
+  private final Wrist mWrist = new Wrist();
+  private final WristUp mWristUp = new WristUp(mWrist);
+  private final WristDown mWristDown = new WristDown(mWrist); 
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -85,10 +91,10 @@ public class RobotContainer {
     aButton.whenHeld(mShootBall);
 
      
-    // JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
-    // JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
-    // leftBumper.whenHeld(mClimbUp);
-    // rightBumper.whenHeld(mClimbDown);     
+    JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
+    JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
+    leftBumper.whenHeld(mWristUp);
+    rightBumper.whenHeld(mWristDown);     
   }
 
 
