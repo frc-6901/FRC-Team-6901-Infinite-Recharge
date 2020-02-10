@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeBallCommand;
 import frc.robot.commands.ClimbDownCommand;
 import frc.robot.commands.ClimbUpCommand;
 import frc.robot.commands.ShootBallCommand;
@@ -23,6 +23,7 @@ import frc.robot.commands.WristUp;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Wrist;
 
@@ -69,6 +70,9 @@ public class RobotContainer {
   private final WristUp mWristUp = new WristUp(mWrist);
   private final WristDown mWristDown = new WristDown(mWrist); 
 
+  private final Intake mIntake = new Intake();
+  private final IntakeBallCommand mIntakeCommand = new IntakeBallCommand(mIntake, true);
+  private final IntakeBallCommand mOuttakeCommand = new IntakeBallCommand(mIntake, false);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -95,6 +99,11 @@ public class RobotContainer {
     JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
     leftBumper.whenHeld(mWristUp);
     rightBumper.whenHeld(mWristDown);     
+
+    JoystickButton startButton = new JoystickButton(controller, XboxController.Button.kStart.value);
+    JoystickButton backButton = new JoystickButton(controller, XboxController.Button.kBack.value);
+    startButton.whenHeld(mIntakeCommand);
+    backButton.whenHeld(mOuttakeCommand);
   }
 
 

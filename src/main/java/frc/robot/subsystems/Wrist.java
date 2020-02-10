@@ -31,6 +31,8 @@ public class Wrist extends SubsystemBase {
 
     }
 
+    // TODO Add something to reduce redundant commands
+
     // TODO Figure out how to use absolute value
 
     /** Open Loop Methods */

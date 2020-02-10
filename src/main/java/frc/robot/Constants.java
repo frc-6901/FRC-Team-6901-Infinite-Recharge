@@ -37,6 +37,11 @@ public final class Constants {
     public static final int kSoftLimitForward = 0;
     public static final int kSoftLimitReverse = 0;
   }
+
+  public static final class IntakeConstants {
+    public static final int kIntakeMotorPort = 0;
+    public static final double kIntakePower = 0;
+  }
     
   public static final class ControllerConstants {
       public static final int controllerPort = 0;
