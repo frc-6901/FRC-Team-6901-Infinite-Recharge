@@ -20,6 +20,23 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final class WristConstants {
+    public static final int kWristMotorPort = 0;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
+
+    public static final int kV = 0;
+    public static final int kA = 0;
+
+    public static final int kRestPosition = 0;
+    public static final int kActivatedPosition = 0;
+    public static final int kSoftLimitForward = 0;
+    public static final int kSoftLimitReverse = 0;
+  }
     
   public static final class ControllerConstants {
       public static final int controllerPort = 0;
