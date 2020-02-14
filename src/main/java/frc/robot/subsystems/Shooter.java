@@ -38,30 +38,7 @@ public class Shooter extends SubsystemBase {
     resetMotors();
     setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-    // Sensor and PID Controller Setup
-    mTopEncoder = mTopMotor.getEncoder();
-    mBottomEncoder = mBottomMotor.getEncoder();
-
-    mBottomPID = mBottomMotor.getPIDController();
-    mTopPID = mTopMotor.getPIDController();
-
     mMotorFeedForward = new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV, ShooterConstants.kA);
-
-
-    // Sets the PID Values
-    // mBottomPID.setP(ShooterConstants.kP);
-    // mBottomPID.setI(ShooterConstants.kI);
-    // mBottomPID.setD(ShooterConstants.kD);
-    // mBottomPID.setFF(ShooterConstants.kF);
-    // mBottomPID.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
-
-    // mTopPID.setP(ShooterConstants.kP);
-    // mTopPID.setI(ShooterConstants.kI);
-    // mTopPID.setD(ShooterConstants.kD);
-    // mTopPID.setFF(ShooterConstants.kF);
-    // mTopPID.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
-    
-
 
     SmartDashboard.putNumber("SetPoint", 0);
     SmartDashboard.putNumber("Velocity Setpoint", 0);
@@ -117,6 +94,12 @@ public class Shooter extends SubsystemBase {
 
   // CLOSED LOOP METHODS
 
+  /**
+   * PID Command that uses WPILib's Simple Motor Feedforward (without accel)
+   * To control motor PID 
+   * @param motor the SPARKMax motor controller that you would like to control 
+   * @param RPM the desired RPM
+   */
   private void PIDShooterMotor(CANSparkMax motor, double RPM) {
 
     double error = RPM - motor.getEncoder().getVelocity();
@@ -142,6 +125,8 @@ public class Shooter extends SubsystemBase {
     } 
     PIDShooterMotor(mTopMotor, RPM2);
   }
+
+
 
   // This is to facilitate the empirical discover of the necessary RPM for a certain condition 
   public void tuningRPMShooter(double defaultRPM) {
