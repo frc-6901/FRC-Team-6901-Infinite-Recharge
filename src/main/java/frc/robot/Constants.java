@@ -39,12 +39,13 @@ public final class Constants {
     public static final int kShooterIdTop = 2;
 
     //PIDF
-    public static final double kP = 0.00005; 
-    public static final double kI = 0.0000001;
-    public static final double kD = 0;
-    public static final double kF = 0.00017;
-    public static final double kMaxOutput = 1; 
-    public static final double kMinOutput = -1;
+    public static final double kP = .586;
+
+    // Simple Motor Feedforward
+    public static final double kS = .115;
+    public static final double kV = .126;
+    public static final double kA = .00916;
+
 
     // RPM Values
     public static final int kRPMDifference = 0;

@@ -8,6 +8,8 @@ import com.revrobotics.ControlType;
 
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -18,6 +20,9 @@ public class Shooter extends SubsystemBase {
     private CANSparkMax mTopMotor;
     private CANEncoder mBottomEncoder, mTopEncoder;
     private CANPIDController mBottomPID, mTopPID;
+    private SimpleMotorFeedforward mMotorFeedForward;
+    private double prevTime;
+    private Timer mTimer;
 
 
   /**
@@ -40,25 +45,25 @@ public class Shooter extends SubsystemBase {
     mBottomPID = mBottomMotor.getPIDController();
     mTopPID = mTopMotor.getPIDController();
 
+    mMotorFeedForward = new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV, ShooterConstants.kA);
+
 
     // Sets the PID Values
-    mBottomPID.setP(ShooterConstants.kP);
-    mBottomPID.setI(ShooterConstants.kI);
-    mBottomPID.setD(ShooterConstants.kD);
-    mBottomPID.setFF(ShooterConstants.kF);
-    mBottomPID.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
+    // mBottomPID.setP(ShooterConstants.kP);
+    // mBottomPID.setI(ShooterConstants.kI);
+    // mBottomPID.setD(ShooterConstants.kD);
+    // mBottomPID.setFF(ShooterConstants.kF);
+    // mBottomPID.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
 
-    mTopPID.setP(ShooterConstants.kP);
-    mTopPID.setI(ShooterConstants.kI);
-    mTopPID.setD(ShooterConstants.kD);
-    mTopPID.setFF(ShooterConstants.kF);
-    mTopPID.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
+    // mTopPID.setP(ShooterConstants.kP);
+    // mTopPID.setI(ShooterConstants.kI);
+    // mTopPID.setD(ShooterConstants.kD);
+    // mTopPID.setFF(ShooterConstants.kF);
+    // mTopPID.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
     
 
 
     SmartDashboard.putNumber("SetPoint", 0);
-    SmartDashboard.putNumber("Max Output", ShooterConstants.kMaxOutput);
-    SmartDashboard.putNumber("Min Output", ShooterConstants.kMinOutput);
     SmartDashboard.putNumber("Velocity Setpoint", 0);
 
   }
@@ -112,24 +117,30 @@ public class Shooter extends SubsystemBase {
 
   // CLOSED LOOP METHODS
 
-  public void RPMShooter(double RPM) {
-    SmartDashboard.putNumber("Velocity Setpoint", RPM);
-    mBottomPID.setReference(RPM, ControlType.kVelocity, 0);
-    mTopPID.setReference(RPM, ControlType.kVelocity, 0);
+  private void PIDShooterMotor(CANSparkMax motor, double RPM) {
 
+    double error = RPM - motor.getEncoder().getVelocity();
+    double output = error * ShooterConstants.kP + mMotorFeedForward.calculate(RPM);
+    motor.setVoltage(output);
+  }
+
+
+  public void RPMShooter(double RPM) {
+    PIDShooterMotor(mTopMotor, RPM);
+    PIDShooterMotor(mBottomMotor, RPM);
   }
 
   public void variableRPMShooter(double RPM) {
 
     SmartDashboard.putNumber("Velocity Setpoint", RPM);
-    mBottomPID.setReference(RPM, ControlType.kVelocity);
+    PIDShooterMotor(mBottomMotor, RPM);
     
     // Reduces RPM while maintaining signs
     double RPM2 = Math.abs(RPM) - ShooterConstants.kRPMDifference;
-    if (RPM2 < 0) {
+    if (RPM < 0) {
       RPM2 *= -1;
     } 
-    mTopPID.setReference(RPM2, ControlType.kVelocity);
+    PIDShooterMotor(mTopMotor, RPM2);
   }
 
   // This is to facilitate the empirical discover of the necessary RPM for a certain condition 
