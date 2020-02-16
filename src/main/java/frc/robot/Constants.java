@@ -39,16 +39,16 @@ public final class Constants {
     public static final int kShooterIdTop = 2;
 
     //PIDF
-    public static final double kP = .586;
+    public static final double kP = .0709;
 
     // Simple Motor Feedforward
-    public static final double kS = .115;
+    public static final double kS = .114;
     public static final double kV = .126;
-    public static final double kA = .00916;
+    public static final double kA = .012; // Acceleration seems negligible for this application
 
 
     // RPM Values
-    public static final int kRPMDifference = 0;
+    public static final int kRPMDifference = 500;
     public static final int kDefaultRPM = -1000;
 
   }

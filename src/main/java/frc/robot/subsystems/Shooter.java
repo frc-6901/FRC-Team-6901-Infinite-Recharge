@@ -9,6 +9,7 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,24 +24,24 @@ public class Shooter extends SubsystemBase {
     private SimpleMotorFeedforward mMotorFeedForward;
     private double prevTime;
     private Timer mTimer;
+    private PIDController mPIDController;
 
 
   /**
    * Creates Shooter Subsystem.
    */
   public Shooter() {
-
+    SmartDashboard.putNumber("output", 0);
     // Motor Setup
     mBottomMotor = new CANSparkMax(ShooterConstants.kShooterIdBottom, MotorType.kBrushless);
     mTopMotor = new CANSparkMax(ShooterConstants.kShooterIdTop, MotorType.kBrushless);
-    
+    mPIDController = new PIDController(ShooterConstants.kP, 0, 0);
     // Makes sure if it was successful
     resetMotors();
     setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-    mMotorFeedForward = new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV, ShooterConstants.kA);
+    mMotorFeedForward = new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV);
 
-    SmartDashboard.putNumber("SetPoint", 0);
     SmartDashboard.putNumber("Velocity Setpoint", 0);
 
   }
@@ -101,9 +102,11 @@ public class Shooter extends SubsystemBase {
    * @param RPM the desired RPM
    */
   private void PIDShooterMotor(CANSparkMax motor, double RPM) {
-
-    double error = RPM - motor.getEncoder().getVelocity();
-    double output = error * ShooterConstants.kP + mMotorFeedForward.calculate(RPM);
+    double setpoint = RPM/60;
+    double error = setpoint - motor.getEncoder().getVelocity()/60;
+    double feedforward = mMotorFeedForward.calculate(setpoint);
+    
+    double output = feedforward + error*ShooterConstants.kP;
     motor.setVoltage(output);
   }
 
@@ -131,7 +134,6 @@ public class Shooter extends SubsystemBase {
   // This is to facilitate the empirical discover of the necessary RPM for a certain condition 
   public void tuningRPMShooter(double defaultRPM) {
     double RPMTarget = SmartDashboard.getNumber("Velocity Setpoint", defaultRPM);
-
     RPMShooter(RPMTarget);
   }
 
@@ -141,7 +143,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // Mostly to update numbers
-    SmartDashboard.putNumber("Bottom Shooter RPM", mBottomEncoder.getVelocity());
-    SmartDashboard.putNumber("Top Shooter RPM", mTopEncoder.getVelocity());
+    SmartDashboard.putNumber("Bottom Shooter RPM", mBottomMotor.getEncoder().getVelocity());
+    SmartDashboard.putNumber("Top Shooter RPM", mTopMotor.getEncoder().getVelocity());
   }
 }
