@@ -7,22 +7,23 @@ package frc.robot.commands;
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
-public class WristUp extends CommandBase {
+public class MoveWrist extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Wrist mWrist;
+  private final boolean isUp;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public WristUp(Wrist wrist) {
+  public MoveWrist(Wrist wrist, boolean up) {
     mWrist = wrist;
+    isUp = up;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(mWrist);
   }
@@ -35,7 +36,7 @@ public class WristUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      mWrist.moveWrist(.2);
+      mWrist.moveWrist((isUp ? 1 : -1) * .2);
   }
 
 

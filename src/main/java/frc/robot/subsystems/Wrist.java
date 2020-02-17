@@ -13,7 +13,7 @@ public class Wrist extends SubsystemBase {
 
     public Wrist() {
         mWristMotor.configFactoryDefault();
-        mWristMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        //mWristMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
 
         mWristMotor.config_kP(0, WristConstants.kP);
         mWristMotor.config_kI(0, WristConstants.kI);
@@ -43,7 +43,7 @@ public class Wrist extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Position", mWristMotor.getSelectedSensorPosition());
+        //SmartDashboard.putNumber("Position", mWristMotor.getSelectedSensorPosition());
     }
 
 

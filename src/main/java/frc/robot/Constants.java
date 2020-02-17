@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 public final class Constants {
 
   public static final class WristConstants {
-    public static final int kWristMotorPort = 0;
+    public static final int kWristMotorPort = 2;
 
     public static final double kP = 0;
     public static final double kI = 0;
@@ -39,8 +39,8 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    public static final int kIntakeMotorPort = 0;
-    public static final double kIntakePower = 0;
+    public static final int kIntakeMotorPort = 6;
+    public static final double kIntakePower = 11;
   }
     
   public static final class ControllerConstants {

@@ -14,12 +14,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeBallCommand;
+import frc.robot.commands.MoveWrist;
 import frc.robot.commands.ClimbDownCommand;
 import frc.robot.commands.ClimbUpCommand;
 import frc.robot.commands.ShootBallCommand;
 import frc.robot.commands.TuningShootBall;
-import frc.robot.commands.WristDown;
-import frc.robot.commands.WristUp;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -57,8 +56,8 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final Shooter mShooter = new Shooter();
-  private final TuningShootBall mShootBall = new TuningShootBall(mShooter);
+  // private final Shooter mShooter = new Shooter();
+  // private final TuningShootBall mShootBall = new TuningShootBall(mShooter);
 
   //  private final Climb mClimber = new Climb();
   //  private final ClimbDownCommand mClimbDown = new ClimbDownCommand(mClimber);
@@ -67,8 +66,8 @@ public class RobotContainer {
   //private final Drive m_robotDrive = new Drive(); 
 
   private final Wrist mWrist = new Wrist();
-  private final WristUp mWristUp = new WristUp(mWrist);
-  private final WristDown mWristDown = new WristDown(mWrist); 
+  private final MoveWrist mWristUp = new MoveWrist(mWrist, true);
+  private final MoveWrist mWristDown = new MoveWrist(mWrist, false); 
 
   private final Intake mIntake = new Intake();
   private final IntakeBallCommand mIntakeCommand = new IntakeBallCommand(mIntake, true);
@@ -91,8 +90,8 @@ public class RobotContainer {
     
      XboxController controller = new XboxController(ControllerConstants.controllerPort);
      
-    JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
-    aButton.whenHeld(mShootBall);
+    // JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
+    // aButton.whenHeld(mShootBall);
 
      
     JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
