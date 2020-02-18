@@ -36,7 +36,7 @@ public class MoveWrist extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      mWrist.moveWrist((isUp ? 1 : -1) * .2);
+      mWrist.moveWrist((isUp ? 1 : -1) * .5);
   }
 
 

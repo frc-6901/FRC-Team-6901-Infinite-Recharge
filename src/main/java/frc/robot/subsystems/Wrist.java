@@ -22,11 +22,11 @@ public class Wrist extends SubsystemBase {
         mWristMotor.configMotionCruiseVelocity(WristConstants.kV);
         mWristMotor.configMotionAcceleration(WristConstants.kA);
 
-        mWristMotor.configForwardSoftLimitThreshold(WristConstants.kSoftLimitForward);
-        mWristMotor.configReverseSoftLimitThreshold(WristConstants.kSoftLimitReverse);
+        // mWristMotor.configForwardSoftLimitThreshold(WristConstants.kSoftLimitForward);
+        // mWristMotor.configReverseSoftLimitThreshold(WristConstants.kSoftLimitReverse);
 
-        mWristMotor.configForwardSoftLimitEnable(true);
-        mWristMotor.configReverseSoftLimitEnable(true);
+        // mWristMotor.configForwardSoftLimitEnable(true);
+        // mWristMotor.configReverseSoftLimitEnable(true);
 
 
     }
