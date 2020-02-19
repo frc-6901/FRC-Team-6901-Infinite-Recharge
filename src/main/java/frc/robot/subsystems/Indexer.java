@@ -12,16 +12,16 @@ import frc.robot.Constants.IndexerConstants;
 public class Indexer extends SubsystemBase {
 
     
-    private VictorSPX mIndexerMotor1, mIndexerMotor2;
+    private VictorSPX mIndexerMotor1;
 
     public Indexer() {
-        mIndexerMotor1 = new VictorSPX(ClimberConstants.kClimberPort2);
-        mIndexerMotor2 = new VictorSPX(ClimberConstants.kClimberPort3);
+        mIndexerMotor1 = new VictorSPX(IndexerConstants.kIndexerPort1);
+        //mIndexerMotor2 = new VictorSPX(ClimberConstants.kClimberPort3);
         
     }
 
     public void runIndexer(double power) {
         mIndexerMotor1.set(ControlMode.PercentOutput, power);
-        mIndexerMotor2.set(ControlMode.PercentOutput, power);
+        //mIndexerMotor2.set(ControlMode.PercentOutput, power);
     }
 }

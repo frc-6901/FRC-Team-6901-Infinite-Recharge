@@ -26,10 +26,10 @@ public final class Constants {
   }
   
   public static final class IndexerConstants {
-      public static final int kIndexerPort1 = 2;
-      public static final int kIndexerPort2 = 6;
+      public static final int kIndexerPort1 = 6;
 
-      public static final double kIndexerSpeed = .3;
+
+      public static final double kIndexerSpeed = -.35;
   }
   public static final class ClimberConstants {
     public static final int kClimberPort1 = 2;
@@ -105,3 +105,4 @@ public final class Constants {
     }
 
 }
+ 
