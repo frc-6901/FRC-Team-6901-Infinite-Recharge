@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANError;
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -17,14 +16,14 @@ public class Shooter extends SubsystemBase {
     private CANSparkMax mTopMotor;
     private SimpleMotorFeedforward mMotorFeedForward;
 
-
+    private boolean shooterAtSpeed = true;
     
 
   /**
    * Creates Shooter Subsystem.
    */
   public Shooter() {
-    SmartDashboard.putNumber("output", 0);
+    //SmartDashboard.putNumber("output", 0);
     // Motor Setup
     mBottomMotor = new CANSparkMax(ShooterConstants.kShooterIdBottom, MotorType.kBrushless);
     mTopMotor = new CANSparkMax(ShooterConstants.kShooterIdTop, MotorType.kBrushless);
@@ -40,7 +39,7 @@ public class Shooter extends SubsystemBase {
     mMotorFeedForward = new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV);
 
     SmartDashboard.putNumber("Velocity Setpoint", 0);
-
+    
   }
 
   private void resetMotors() {
@@ -87,6 +86,7 @@ public class Shooter extends SubsystemBase {
   public void stopShooter() {
     mBottomMotor.set(0);
     mTopMotor.set(0);
+    shooterAtSpeed = true;
 
   }
 
@@ -98,10 +98,11 @@ public class Shooter extends SubsystemBase {
    * @param motor the SPARKMax motor controller that you would like to control 
    * @param RPM the desired RPM
    */
-  private void PIDShooterMotor(CANSparkMax motor, double RPM) {
+  private boolean PIDShooterMotor(CANSparkMax motor, double RPM) {
     
     double feedforward = mMotorFeedForward.calculate(RPMToRPS(RPM));
     motor.getPIDController().setReference(RPM, ControlType.kVelocity, 0, feedforward);
+    return Math.abs(RPM - motor.getEncoder().getVelocity()) <= 100;
   }
 
   /**
@@ -120,8 +121,9 @@ public class Shooter extends SubsystemBase {
    * @param RPM the desired RPM
    */
   public void RPMShooter(double RPM) {
-    PIDShooterMotor(mTopMotor, RPM);
-    PIDShooterMotor(mBottomMotor, RPM);
+    boolean topMotor = PIDShooterMotor(mTopMotor, RPM);
+    boolean bottomMotor = PIDShooterMotor(mBottomMotor, RPM);
+    shooterAtSpeed = topMotor && bottomMotor;
   }
 
   /**
@@ -133,26 +135,18 @@ public class Shooter extends SubsystemBase {
   public void variableRPMShooter(double RPM) {
 
     SmartDashboard.putNumber("Velocity Setpoint", RPM);
-    PIDShooterMotor(mBottomMotor, RPM);
+    boolean bottomMotor = PIDShooterMotor(mBottomMotor, RPM);
     
     // Reduces RPM while maintaining signs
     double RPM2 = Math.abs(RPM) - ShooterConstants.kRPMDifference;
     if (RPM < 0) {
       RPM2 *= -1;
     } 
-    PIDShooterMotor(mTopMotor, RPM2);
+    boolean topMotor = PIDShooterMotor(mTopMotor, RPM2);
+    shooterAtSpeed = bottomMotor && topMotor;
   }
 
-  private boolean atSpeed(double RPM, CANSparkMax motor) {
-    return Math.abs(RPM - motor.getEncoder().getVelocity()) <= 100;  
-    
-  }
-
-  public boolean shooterAtSpeed(double RPM) {
-    return atSpeed(RPM, mTopMotor) && atSpeed(RPM, mBottomMotor);
-  }
-
-
+  
 
   /**
    * This method sets motor speeds to a velocity 
@@ -173,5 +167,6 @@ public class Shooter extends SubsystemBase {
     // Mostly to update numbers
     SmartDashboard.putNumber("Bottom Shooter RPM", mBottomMotor.getEncoder().getVelocity());
     SmartDashboard.putNumber("Top Shooter RPM", mTopMotor.getEncoder().getVelocity());
+    SmartDashboard.putBoolean("At Speed", shooterAtSpeed);
   }
 }
