@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANError;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -16,6 +18,8 @@ public class Shooter extends SubsystemBase {
     private SimpleMotorFeedforward mMotorFeedForward;
 
 
+    
+
   /**
    * Creates Shooter Subsystem.
    */
@@ -24,9 +28,15 @@ public class Shooter extends SubsystemBase {
     // Motor Setup
     mBottomMotor = new CANSparkMax(ShooterConstants.kShooterIdBottom, MotorType.kBrushless);
     mTopMotor = new CANSparkMax(ShooterConstants.kShooterIdTop, MotorType.kBrushless);
+
     resetMotors();
     setIdleMode(CANSparkMax.IdleMode.kBrake);
 
+    mTopMotor.getPIDController().setP(ShooterConstants.kP);
+    mBottomMotor.getPIDController().setP(ShooterConstants.kP);
+
+    mTopMotor.setSmartCurrentLimit(20);
+    mBottomMotor.setSmartCurrentLimit(20);
     mMotorFeedForward = new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV);
 
     SmartDashboard.putNumber("Velocity Setpoint", 0);
@@ -89,12 +99,9 @@ public class Shooter extends SubsystemBase {
    * @param RPM the desired RPM
    */
   private void PIDShooterMotor(CANSparkMax motor, double RPM) {
-    double setpoint = RPMToRPS(RPM);
-    double error = setpoint - RPMToRPS(motor.getEncoder().getVelocity());
-    double feedforward = mMotorFeedForward.calculate(setpoint);
     
-    double output = feedforward + error*ShooterConstants.kP;
-    motor.setVoltage(output);
+    double feedforward = mMotorFeedForward.calculate(RPMToRPS(RPM));
+    motor.getPIDController().setReference(RPM, ControlType.kVelocity, 0, feedforward);
   }
 
   /**
@@ -134,6 +141,15 @@ public class Shooter extends SubsystemBase {
       RPM2 *= -1;
     } 
     PIDShooterMotor(mTopMotor, RPM2);
+  }
+
+  private boolean atSpeed(double RPM, CANSparkMax motor) {
+    return Math.abs(RPM - motor.getEncoder().getVelocity()) <= 100;  
+    
+  }
+
+  public boolean shooterAtSpeed(double RPM) {
+    return atSpeed(RPM, mTopMotor) && atSpeed(RPM, mBottomMotor);
   }
 
 

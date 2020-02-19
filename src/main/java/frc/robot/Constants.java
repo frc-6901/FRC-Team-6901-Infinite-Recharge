@@ -39,7 +39,8 @@ public final class Constants {
     public static final int kShooterIdTop = 2;
 
     //PIDF
-    public static final double kP = .05;
+    public static final double kP = .00005;
+    public static final double kF = .00017;
 
     // Simple Motor Feedforward
     public static final double kS = .114;
