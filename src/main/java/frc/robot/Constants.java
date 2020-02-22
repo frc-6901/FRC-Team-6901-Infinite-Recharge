@@ -25,7 +25,7 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int kIntakeMotorPort = 10;
-    public static final double kIntakePower = .3;
+    public static final double kIntakePower = .5;
   }
     
   public static final class ControllerConstants {
