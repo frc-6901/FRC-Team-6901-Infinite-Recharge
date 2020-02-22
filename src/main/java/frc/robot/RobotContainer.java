@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeBallCommand;
-import frc.robot.commands.MoveWrist;
 import frc.robot.commands.ClimbDownCommand;
 import frc.robot.commands.ClimbUpCommand;
 import frc.robot.commands.ShootBallCommand;
@@ -24,7 +23,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Wrist;
+
 
 import java.util.List;
 
@@ -65,10 +64,7 @@ public class RobotContainer {
   
   //private final Drive m_robotDrive = new Drive(); 
 
-  private final Wrist mWrist = new Wrist();
-  private final MoveWrist mWristUp = new MoveWrist(mWrist, true);
-  private final MoveWrist mWristDown = new MoveWrist(mWrist, false); 
-
+  
   private final Intake mIntake = new Intake();
   private final IntakeBallCommand mIntakeCommand = new IntakeBallCommand(mIntake, true);
   private final IntakeBallCommand mOuttakeCommand = new IntakeBallCommand(mIntake, false);
@@ -94,10 +90,7 @@ public class RobotContainer {
     // aButton.whenHeld(mShootBall);
 
      
-    JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
-    JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
-    leftBumper.whenHeld(mWristUp);
-    rightBumper.whenHeld(mWristDown);     
+  
 
     JoystickButton startButton = new JoystickButton(controller, XboxController.Button.kStart.value);
     JoystickButton backButton = new JoystickButton(controller, XboxController.Button.kBack.value);
