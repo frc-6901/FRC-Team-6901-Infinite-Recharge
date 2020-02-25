@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class ShootBallCommand extends CommandBase {
+public class TuningShootBall extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Shooter mShooter;
 
@@ -24,7 +24,7 @@ public class ShootBallCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootBallCommand(Shooter shooter) {
+  public TuningShootBall(Shooter shooter) {
     mShooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(mShooter);
@@ -38,9 +38,9 @@ public class ShootBallCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mShooter.RPMShooter(ShooterConstants.kDefaultRPM);
+    mShooter.tuningRPMShooter(ShooterConstants.kDefaultRPM);
     //mShooter.runOpenLoop(.5);
-    //System.out.println("Shooting ball");
+    
   }
 
   // Called once the command ends or is interrupted.

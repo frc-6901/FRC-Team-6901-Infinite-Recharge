@@ -17,7 +17,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ClimbDownCommand;
 import frc.robot.commands.ClimbUpCommand;
 import frc.robot.commands.ShootBallCommand;
-
+import frc.robot.commands.TuningShootBall;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -54,11 +54,11 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   private final Shooter mShooter = new Shooter();
-  private final ShootBallCommand mShootBall = new ShootBallCommand(mShooter);
+  private final TuningShootBall mShootBall = new TuningShootBall(mShooter);
 
-  // private final Climb mClimber = new Climb();
-  // private final ClimbDownCommand mClimbDown = new ClimbDownCommand(mClimber);
-  // private final ClimbUpCommand mClimbUp = new ClimbUpCommand(mClimber);
+  //  private final Climb mClimber = new Climb();
+  //  private final ClimbDownCommand mClimbDown = new ClimbDownCommand(mClimber);
+  //  private final ClimbUpCommand mClimbUp = new ClimbUpCommand(mClimber);
   
   //private final Drive m_robotDrive = new Drive(); 
 
@@ -79,16 +79,16 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-     XboxController controller = new XboxController(Constants.controllerPort);
+     XboxController controller = new XboxController(ControllerConstants.controllerPort);
      
-     JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
-     aButton.whenHeld(mShootBall);
+    JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
+    aButton.whenHeld(mShootBall);
 
      
-    //  JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
-    //  JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
-    //  leftBumper.whenHeld(mClimbUp);
-    //  rightBumper.whenHeld(mClimbDown);     
+    // JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
+    // JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
+    // leftBumper.whenHeld(mClimbUp);
+    // rightBumper.whenHeld(mClimbDown);     
   }
 
 

@@ -43,7 +43,7 @@ public class VisionController extends SubsystemBase{
     
     private double estimateDistance() {
         //updateValues();
-        double heightDistance = LimelightConstants.kTargetHeightMeters - LimelightConstants.kLimelightHeight;
+        double heightDistance = LimelightConstants.kTargetHeight - LimelightConstants.kLimelightHeight;
         double totalAngle = LimelightConstants.kLimelightAngle + limelightValues[1];
 
         return heightDistance / Math.tan(Math.toRadians(totalAngle));  
@@ -71,7 +71,7 @@ public class VisionController extends SubsystemBase{
     }
 
     public int getRPM() {
-        // TODO Figure out distance and polynomial regression
+
         double distance = estimateDistance();
         return (int) ShooterConstants.kPolynomial.predict(distance);
     }
@@ -81,7 +81,8 @@ public class VisionController extends SubsystemBase{
         updateValues();
         SmartDashboard.putBoolean("Sees Target", seesTarget);
         SmartDashboard.putNumber("Target X Error", limelightValues[0]);
-
+        SmartDashboard.putNumber("Estimate Distance", estimateDistance());
+        SmartDashboard.putNumber("Target RPM", getRPM());
     }
 
 }
