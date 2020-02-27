@@ -1,13 +1,11 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANError;
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
-
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -16,51 +14,32 @@ import frc.robot.Constants.ShooterConstants;
 public class Shooter extends SubsystemBase {
     private CANSparkMax mBottomMotor;
     private CANSparkMax mTopMotor;
-    private CANEncoder mBottomEncoder, mTopEncoder;
-    private CANPIDController mBottomPID, mTopPID;
+    private SimpleMotorFeedforward mMotorFeedForward;
 
+    private boolean shooterAtSpeed = true;
+    
 
   /**
    * Creates Shooter Subsystem.
    */
   public Shooter() {
-
+    //SmartDashboard.putNumber("output", 0);
     // Motor Setup
     mBottomMotor = new CANSparkMax(ShooterConstants.kShooterIdBottom, MotorType.kBrushless);
     mTopMotor = new CANSparkMax(ShooterConstants.kShooterIdTop, MotorType.kBrushless);
-    
-    // Makes sure if it was successful
+
     resetMotors();
     setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-    // Sensor and PID Controller Setup
-    mTopEncoder = mTopMotor.getEncoder();
-    mBottomEncoder = mBottomMotor.getEncoder();
+    mTopMotor.getPIDController().setP(ShooterConstants.kP);
+    mBottomMotor.getPIDController().setP(ShooterConstants.kP);
 
-    mBottomPID = mBottomMotor.getPIDController();
-    mTopPID = mTopMotor.getPIDController();
+    mTopMotor.setSmartCurrentLimit(20);
+    mBottomMotor.setSmartCurrentLimit(20);
+    mMotorFeedForward = new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV);
 
-
-    // Sets the PID Values
-    mBottomPID.setP(ShooterConstants.kP);
-    mBottomPID.setI(ShooterConstants.kI);
-    mBottomPID.setD(ShooterConstants.kD);
-    mBottomPID.setFF(ShooterConstants.kF);
-    mBottomPID.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
-
-    mTopPID.setP(ShooterConstants.kP);
-    mTopPID.setI(ShooterConstants.kI);
-    mTopPID.setD(ShooterConstants.kD);
-    mTopPID.setFF(ShooterConstants.kF);
-    mTopPID.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
-    
-
-
-    SmartDashboard.putNumber("SetPoint", 0);
-    SmartDashboard.putNumber("Max Output", ShooterConstants.kMaxOutput);
-    SmartDashboard.putNumber("Min Output", ShooterConstants.kMinOutput);
     SmartDashboard.putNumber("Velocity Setpoint", 0);
-
+    
   }
 
   private void resetMotors() {
@@ -107,35 +86,76 @@ public class Shooter extends SubsystemBase {
   public void stopShooter() {
     mBottomMotor.set(0);
     mTopMotor.set(0);
+    shooterAtSpeed = true;
 
   }
 
   // CLOSED LOOP METHODS
 
-  public void RPMShooter(double RPM) {
-    SmartDashboard.putNumber("Velocity Setpoint", RPM);
-    mBottomPID.setReference(RPM, ControlType.kVelocity, 0);
-    mTopPID.setReference(RPM, ControlType.kVelocity, 0);
-
+  /**
+   * PID Command that uses WPILib's Simple Motor Feedforward (without accel)
+   * To control motor PID 
+   * @param motor the SPARKMax motor controller that you would like to control 
+   * @param RPM the desired RPM
+   */
+  private boolean PIDShooterMotor(CANSparkMax motor, double RPM) {
+    
+    double feedforward = mMotorFeedForward.calculate(RPMToRPS(RPM));
+    motor.getPIDController().setReference(RPM, ControlType.kVelocity, 0, feedforward);
+    return Math.abs(RPM - motor.getEncoder().getVelocity()) <= 100;
   }
 
+  /**
+   * Converts an Rotations Per minute value into rotations per second
+   * @param RPM the RPM Value to convert
+   * @return the Rotations per second of that value
+   */
+  private double RPMToRPS(double RPM) {
+    return RPM / 60;
+  }
+
+
+  /**
+   * Sets the top and bottom shooter 
+   * to a certain RPM
+   * @param RPM the desired RPM
+   */
+  public void RPMShooter(double RPM) {
+    boolean topMotor = PIDShooterMotor(mTopMotor, RPM);
+    boolean bottomMotor = PIDShooterMotor(mBottomMotor, RPM);
+    shooterAtSpeed = topMotor && bottomMotor;
+  }
+
+  /**
+   * Sets the top shooter to be 
+   * slower than the bottom shooter
+   * in order to have more spin on the ball
+   * @param RPM the desired bottom rpm
+   */
   public void variableRPMShooter(double RPM) {
 
     SmartDashboard.putNumber("Velocity Setpoint", RPM);
-    mBottomPID.setReference(RPM, ControlType.kVelocity);
+    boolean bottomMotor = PIDShooterMotor(mBottomMotor, RPM);
     
     // Reduces RPM while maintaining signs
     double RPM2 = Math.abs(RPM) - ShooterConstants.kRPMDifference;
-    if (RPM2 < 0) {
+    if (RPM < 0) {
       RPM2 *= -1;
     } 
-    mTopPID.setReference(RPM2, ControlType.kVelocity);
+    boolean topMotor = PIDShooterMotor(mTopMotor, RPM2);
+    shooterAtSpeed = bottomMotor && topMotor;
   }
 
-  // This is to facilitate the empirical discover of the necessary RPM for a certain condition 
+  
+
+  /**
+   * This method sets motor speeds to a velocity 
+   * specified in the Smart Dashboard in order to 
+   * facilitate tuning the shooter from certain distances
+   * @param defaultRPM the default Rotation per minute
+   */
   public void tuningRPMShooter(double defaultRPM) {
     double RPMTarget = SmartDashboard.getNumber("Velocity Setpoint", defaultRPM);
-
     RPMShooter(RPMTarget);
   }
 
@@ -145,7 +165,8 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // Mostly to update numbers
-    SmartDashboard.putNumber("Bottom Shooter RPM", mBottomEncoder.getVelocity());
-    SmartDashboard.putNumber("Top Shooter RPM", mTopEncoder.getVelocity());
+    SmartDashboard.putNumber("Bottom Shooter RPM", mBottomMotor.getEncoder().getVelocity());
+    SmartDashboard.putNumber("Top Shooter RPM", mTopMotor.getEncoder().getVelocity());
+    SmartDashboard.putBoolean("At Speed", shooterAtSpeed);
   }
 }

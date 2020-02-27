@@ -40,7 +40,7 @@ public class TuningShootBall extends CommandBase {
   public void execute() {
     mShooter.tuningRPMShooter(ShooterConstants.kDefaultRPM);
     //mShooter.runOpenLoop(.5);
-    //System.out.println("Shooting ball");
+    
   }
 
   // Called once the command ends or is interrupted.
