@@ -19,27 +19,30 @@ public class Superstructure extends SubsystemBase {
   private Shooter mShooter;
   private Feeder mFeeder;
   private SuperstructureState mState;
+  private VisionController mLimelight;
   private int mShootingState = 0;
 
   public enum SuperstructureState {
       IDLE,
-      DEFAULT_SHOOTING
+      DEFAULT_SHOOTING,
+      LIMELIGHT_SHOOTING
   }
 
-  public Superstructure(Shooter shooter, Feeder feeder) {
+  public Superstructure(Shooter shooter, Feeder feeder, VisionController limelight) {
     mShooter = shooter;
     mFeeder = feeder;
+    mLimelight = limelight;
   }
 
-  public void defaultShoot() {
-      mState = SuperstructureState.DEFAULT_SHOOTING;
+  public void shoot(SuperstructureState state) {
+      mState = state;
       mShootingState = 0; 
   }
 
   public void stop() {
       mState = SuperstructureState.IDLE;
   }
-  // TODO: Integrate Limelight
+  
 
 
 
@@ -60,6 +63,21 @@ public class Superstructure extends SubsystemBase {
                     mFeeder.runFeeder();
                     break;
             
+            }
+            break;
+        case LIMELIGHT_SHOOTING:
+            switch(mShootingState) {
+                case 0:
+                    mShooter.RPMShooter(mLimelight.getRPM());
+                    if (mShooter.atSpeed()) {
+                        mShootingState++;
+                    } else {
+                        break;
+                    }
+                case 1:
+                    mFeeder.runFeeder();
+                    break;
+
             }
             break;
         default:

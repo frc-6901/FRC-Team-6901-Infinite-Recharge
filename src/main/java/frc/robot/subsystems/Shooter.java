@@ -120,7 +120,7 @@ public class Shooter extends SubsystemBase {
    * to a certain RPM
    * @param RPM the desired RPM
    */
-  public void RPMShooter(double RPM) {
+  public void RPMShooter(int RPM) {
     boolean topMotor = PIDShooterMotor(mTopMotor, RPM);
     boolean bottomMotor = PIDShooterMotor(mBottomMotor, RPM);
     shooterAtSpeed = topMotor && bottomMotor;
@@ -132,7 +132,7 @@ public class Shooter extends SubsystemBase {
    * in order to have more spin on the ball
    * @param RPM the desired bottom rpm
    */
-  public void variableRPMShooter(double RPM) {
+  public void variableRPMShooter(int RPM) {
 
     SmartDashboard.putNumber("Velocity Setpoint", RPM);
     boolean bottomMotor = PIDShooterMotor(mBottomMotor, RPM);
@@ -154,8 +154,8 @@ public class Shooter extends SubsystemBase {
    * facilitate tuning the shooter from certain distances
    * @param defaultRPM the default Rotation per minute
    */
-  public void tuningRPMShooter(double defaultRPM) {
-    double RPMTarget = SmartDashboard.getNumber("Velocity Setpoint", defaultRPM);
+  public void tuningRPMShooter(int defaultRPM) {
+    int RPMTarget = (int) SmartDashboard.getNumber("Velocity Setpoint", defaultRPM);
     RPMShooter(RPMTarget);
   }
 
