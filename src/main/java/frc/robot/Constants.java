@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import frc.Util.PolynomialRegression;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -39,7 +40,26 @@ public final class Constants {
 
   }
 
+    
+    //TODO Modify constants
   public static final class ShooterConstants{
+      
+      public static PolynomialRegression kPolynomial;
+      
+      public static double[][] kDistanceRPMTable = {
+        {0, 0}
+      };
+
+      static {
+        double[] x = new double[kDistanceRPMTable.length];
+        double[] y = new double[kDistanceRPMTable.length];
+        for (int i = 0; i < kDistanceRPMTable.length; i++) {
+          x[i] = kDistanceRPMTable[i][0];
+          y[i] = kDistanceRPMTable[i][1];
+        }
+        kPolynomial = new PolynomialRegression(x, y, 2);
+      }
+  
     //Ports
     public static final int kShooterIdBottom = 1;
     public static final int kShooterIdTop = 2;
@@ -56,16 +76,30 @@ public final class Constants {
 
     // RPM Values
     public static final int kRPMDifference = 500;
-    public static final int kDefaultRPM = -1000;
+    public static final int kDefaultRPM = -3500;
+
+  }
+
+  public static final class LimelightConstants {
+    public static final double kTargetHeight = 0;
+    public static final double kLimelightHeight = 0;
+    public static final double kLimelightAngle = 0;
+
+    public static final double kXThreshold = 0;
 
   }
     //TODO Modify Constants and also change inner classes
-  public static final class DriveConstants {
-    public static final int kLeftMotor1Port = 1;
-    public static final int kLeftMotor2Port = 1;
-    public static final int kRightMotor1Port = 2;
-    public static final int kRightMotor2Port = 2;
-    public static final int kPigeonPort = 0;
+    public static final class DriveConstants {
+
+      //Limelight tuning
+      public static final double kP = 0;
+      public static final double kD = 0;
+
+      public static final int kLeftMotor1Port = 1;
+      public static final int kLeftMotor2Port = 1;
+      public static final int kRightMotor1Port = 2;
+      public static final int kRightMotor2Port = 2;
+      public static final int kPigeonPort = 0;
   
     public static final int[] kLeftEncoderPorts = new int[]{0, 1};
     public static final int[] kRightEncoderPorts = new int[]{2, 3};
