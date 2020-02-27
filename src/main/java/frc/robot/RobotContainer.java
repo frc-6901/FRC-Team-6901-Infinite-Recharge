@@ -21,7 +21,7 @@ import frc.robot.commands.TuningShootBall;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
 import java.util.List;
@@ -61,8 +61,8 @@ public class RobotContainer {
   //  private final ClimbDownCommand mClimbDown = new ClimbDownCommand(mClimber);
   //  private final ClimbUpCommand mClimbUp = new ClimbUpCommand(mClimber);
 
-  private final Indexer mIndexer = new Indexer();
-  private final RunIndexer mIndexerCommand = new RunIndexer(mIndexer);
+  private final Feeder mFeeder = new Feeder();
+  private final RunIndexer mIndexerCommand = new RunIndexer(mFeeder);
   
   //private final Drive m_robotDrive = new Drive(); 
 

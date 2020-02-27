@@ -9,12 +9,12 @@ import frc.robot.Constants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.IndexerConstants;
 
-public class Indexer extends SubsystemBase {
+public class Feeder extends SubsystemBase {
 
     
     private VictorSPX mIndexerMotor1;
 
-    public Indexer() {
+    public Feeder() {
         mIndexerMotor1 = new VictorSPX(IndexerConstants.kIndexerPort1);
         //mIndexerMotor2 = new VictorSPX(ClimberConstants.kClimberPort3);
         
@@ -23,5 +23,13 @@ public class Indexer extends SubsystemBase {
     public void runIndexer(double power) {
         mIndexerMotor1.set(ControlMode.PercentOutput, power);
         //mIndexerMotor2.set(ControlMode.PercentOutput, power);
+    }
+
+    public void runFeeder() {
+        runIndexer(0);
+    }
+
+    public void stopFeeder() {
+        mIndexerMotor1.set(ControlMode.PercentOutput, 0);
     }
 }

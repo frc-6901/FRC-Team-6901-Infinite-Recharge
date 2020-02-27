@@ -159,6 +159,10 @@ public class Shooter extends SubsystemBase {
     RPMShooter(RPMTarget);
   }
 
+  public boolean atSpeed() {
+    return shooterAtSpeed;
+  }
+
 
   
   

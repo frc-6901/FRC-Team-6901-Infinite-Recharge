@@ -7,9 +7,10 @@
 
 package frc.robot.commands;
 
-
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -17,17 +18,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 public class ShootBallCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Shooter mShooter;
+  private final Superstructure mSuperstructure;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootBallCommand(Shooter shooter) {
-    mShooter = shooter;
+  public ShootBallCommand(Superstructure superstructure) {
+    mSuperstructure = superstructure;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(mShooter);
+    addRequirements(superstructure);
   }
 
   // Called when the command is initially scheduled.
@@ -38,15 +39,14 @@ public class ShootBallCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mShooter.RPMShooter(ShooterConstants.kDefaultRPM);
-    //mShooter.runOpenLoop(.5);
-    //System.out.println("Shooting ball");
+    mSuperstructure.defaultShoot();
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      mShooter.stopShooter();
+      mSuperstructure.stop();
   }
 
   // Returns true when the command should end.
