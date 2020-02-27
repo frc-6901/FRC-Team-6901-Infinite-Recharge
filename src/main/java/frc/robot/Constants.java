@@ -26,11 +26,12 @@ public final class Constants {
       public static final int controllerPort = 0;
   }
   
-  public static final class IndexerConstants {
-      public static final int kIndexerPort1 = 6;
+  public static final class FeederConstants {
+    public static final int kIndexerPort = 10;
+    public static final int kAcceleratorWheelPort = 12;
 
-
-      public static final double kIndexerSpeed = -.35;
+    public static final double kIndexerSpeed = -.35;
+    public static final double kAcceleratorSpeed = 0.1;
   }
   public static final class ClimberConstants {
     public static final int kClimberPort1 = 2;

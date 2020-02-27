@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Feeder;
 
 
-public class RunIndexer extends CommandBase {
+public class RunAccelerator extends CommandBase {
     private Feeder mFeeder;
-    public RunIndexer(Feeder feeder) {
+    public RunAccelerator(Feeder feeder) {
         mFeeder = feeder;
     }
 
@@ -17,7 +17,7 @@ public class RunIndexer extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      mFeeder.runIndexer();
+      mFeeder.runAccelerator();
   }
 
   // Called once the command ends or is interrupted.

@@ -8,11 +8,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RunAccelerator;
+import frc.robot.commands.RunFeeder;
 import frc.robot.commands.RunIndexer;
 import frc.robot.commands.ClimbDownCommand;
 import frc.robot.commands.ClimbUpCommand;
@@ -23,6 +26,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Superstructure;
 
 import java.util.List;
 
@@ -54,8 +58,8 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  // private final Shooter mShooter = new Shooter();
-  // private final TuningShootBall mShootBall = new TuningShootBall(mShooter);
+  private final Shooter mShooter = new Shooter();
+  //private final TuningShootBall mShootBall = new TuningShootBall(mShooter);
 
   //  private final Climb mClimber = new Climb();
   //  private final ClimbDownCommand mClimbDown = new ClimbDownCommand(mClimber);
@@ -63,7 +67,11 @@ public class RobotContainer {
 
   private final Feeder mFeeder = new Feeder();
   private final RunIndexer mIndexerCommand = new RunIndexer(mFeeder);
+  private final RunAccelerator mAcceleratorCommand = new RunAccelerator(mFeeder);
+  private final RunFeeder mFeederCommand = new RunFeeder(mFeeder);
   
+  private final Superstructure mSuperstructure = new Superstructure(mShooter, mFeeder);
+  private final ShootBallCommand mShoot = new ShootBallCommand(mSuperstructure);
   //private final Drive m_robotDrive = new Drive(); 
 
 
@@ -90,6 +98,12 @@ public class RobotContainer {
 
      JoystickButton bButton = new JoystickButton(controller, XboxController.Button.kB.value);
     bButton.whenHeld(mIndexerCommand);
+    JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
+    aButton.whenHeld(mFeederCommand);
+    JoystickButton xButton = new JoystickButton(controller, XboxController.Button.kX.value);
+    xButton.whenHeld(mAcceleratorCommand);
+    JoystickButton yButton = new JoystickButton(controller, XboxController.Button.kY.value);
+    yButton.whenHeld(mShoot);
     // JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
     // JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
     // leftBumper.whenHeld(mClimbUp);

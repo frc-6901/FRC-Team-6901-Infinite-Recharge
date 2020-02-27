@@ -39,7 +39,7 @@ public class ShootBallCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mSuperstructure.shoot(SuperstructureState.LIMELIGHT_SHOOTING);
+    mSuperstructure.shoot(SuperstructureState.DEFAULT_SHOOTING);
 
   }
 

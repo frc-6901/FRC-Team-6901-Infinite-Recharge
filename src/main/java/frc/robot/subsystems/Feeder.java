@@ -7,29 +7,36 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.IndexerConstants;
+import frc.robot.Constants.FeederConstants;
 
 public class Feeder extends SubsystemBase {
 
     
-    private VictorSPX mIndexerMotor1;
+    private VictorSPX mIndexerMotor, mAcceleratorWheel;
 
     public Feeder() {
-        mIndexerMotor1 = new VictorSPX(IndexerConstants.kIndexerPort1);
+        mIndexerMotor = new VictorSPX(FeederConstants.kIndexerPort);
+        mAcceleratorWheel = new VictorSPX(FeederConstants.kAcceleratorWheelPort);
         //mIndexerMotor2 = new VictorSPX(ClimberConstants.kClimberPort3);
         
     }
 
-    public void runIndexer(double power) {
-        mIndexerMotor1.set(ControlMode.PercentOutput, power);
+    public void runIndexer() {
+        mIndexerMotor.set(ControlMode.PercentOutput, FeederConstants.kIndexerSpeed);
         //mIndexerMotor2.set(ControlMode.PercentOutput, power);
     }
 
+    public void runAccelerator() {
+        mAcceleratorWheel.set(ControlMode.PercentOutput, FeederConstants.kAcceleratorSpeed);
+    }
+
     public void runFeeder() {
-        runIndexer(0);
+        runIndexer();
+        runAccelerator();
     }
 
     public void stopFeeder() {
-        mIndexerMotor1.set(ControlMode.PercentOutput, 0);
+        mIndexerMotor.set(ControlMode.PercentOutput, 0);
+        mAcceleratorWheel.set(ControlMode.PercentOutput, 0);
     }
 }
