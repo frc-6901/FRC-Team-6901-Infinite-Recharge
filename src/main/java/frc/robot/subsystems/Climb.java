@@ -10,16 +10,24 @@ import frc.robot.Constants.ClimberConstants;
 public class Climb extends SubsystemBase {
 
     private TalonSRX mClimbMaster;
-    private VictorSPX mClimbSlave1, mClimbSlave2, mClimbSlave3;
+    private VictorSPX mClimbSlave1, mClimbSlave2, mClimbSlave3, mUpstring;
 
     public Climb() {
         mClimbMaster = new TalonSRX(ClimberConstants.kClimberPort1);
         mClimbSlave1 = new VictorSPX(ClimberConstants.kClimberPort2);
         mClimbSlave2 = new VictorSPX(ClimberConstants.kClimberPort3);
         mClimbSlave3 = new VictorSPX(ClimberConstants.kClimberPort4);
+        
+        mUpstring = new VictorSPX(ClimberConstants.kUpstringPort);
         mClimbSlave1.follow(mClimbMaster);
         mClimbSlave2.follow(mClimbMaster);
         mClimbSlave3.follow(mClimbMaster);
+
+
+    }
+
+    public void runUpstring(double power) {
+        mUpstring.set(ControlMode.PercentOutput, power);  
     }
 
     public void runClimb(double power) {

@@ -24,7 +24,8 @@ public class Superstructure extends SubsystemBase {
 
   public enum SuperstructureState {
       IDLE,
-      DEFAULT_SHOOTING
+      DEFAULT_SHOOTING,
+      TUNING_SHOOTER
   }
 
   public Superstructure(Shooter shooter, Feeder feeder) {
@@ -60,6 +61,22 @@ public class Superstructure extends SubsystemBase {
                     break;
             
             }
+            break;
+        case TUNING_SHOOTER:
+            switch(mShootingState) {
+                case 0:
+                    mShooter.tuningRPMShooter(ShooterConstants.kDefaultRPM);
+                    if (mShooter.atSpeed()) {
+                        mShootingState++;
+                    } else {
+                        break;
+                    }
+                case 1:
+                    mFeeder.runFeeder();
+                    break;
+        
+        }
+        
             break;
         // case LIMELIGHT_SHOOTING:
         //     switch(mShootingState) {
