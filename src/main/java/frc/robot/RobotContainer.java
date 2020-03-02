@@ -14,22 +14,25 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.JogShooter;
+import frc.robot.commands.MoveUpstring;
 import frc.robot.commands.RunAccelerator;
 import frc.robot.commands.RunFeeder;
 import frc.robot.commands.RunIndexer;
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.ClimbDownCommand;
-import frc.robot.commands.ClimbUpCommand;
+import frc.robot.commands.DriveForward;
 import frc.robot.commands.ShootBallCommand;
 import frc.robot.commands.TuningShootBall;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Superstructure;
 
 import java.util.List;
-
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -42,8 +45,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-
-
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.*;
 
 /**
@@ -61,9 +63,10 @@ public class RobotContainer {
   private final Shooter mShooter = new Shooter();
   //private final TuningShootBall mShootBall = new TuningShootBall(mShooter);
 
-  //  private final Climb mClimber = new Climb();
-  //  private final ClimbDownCommand mClimbDown = new ClimbDownCommand(mClimber);
-  //  private final ClimbUpCommand mClimbUp = new ClimbUpCommand(mClimber);
+   private final Climb mClimber = new Climb();
+   private final ClimbDownCommand mClimbDown = new ClimbDownCommand(mClimber);
+   private final MoveUpstring mUpstringUp = new MoveUpstring(mClimber, true);
+   private final MoveUpstring mUpstringDown = new MoveUpstring(mClimber, false);
 
   private final Feeder mFeeder = new Feeder();
   private final RunIndexer mIndexerCommand = new RunIndexer(mFeeder);
@@ -72,14 +75,26 @@ public class RobotContainer {
   
   private final Superstructure mSuperstructure = new Superstructure(mShooter, mFeeder);
   private final ShootBallCommand mShoot = new ShootBallCommand(mSuperstructure);
-  //private final Drive m_robotDrive = new Drive(); 
+  private final JogShooter mJog = new JogShooter(mShooter);
+  
+  private final Intake mIntake = new Intake();
+  private final RunIntake mIntakeBalls = new RunIntake(mIntake, true);
+  private final RunIntake mOutakeBalls = new RunIntake(mIntake, false);
 
+  private final Drive mRobotDrive = new Drive(); 
+  private final DriveForward mDriveForward = new DriveForward(mRobotDrive);
 
+  private final XboxController controller = new XboxController(ControllerConstants.controllerPort);
+  private final XboxController navigator = new XboxController(ControllerConstants.controllerPort2);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
+
+    mRobotDrive.setDefaultCommand(new RunCommand ( () -> mRobotDrive
+      .arcadeDrive(-navigator.getY(GenericHID.Hand.kLeft) * .8, navigator.getX(GenericHID.Hand.kRight) * .8), mRobotDrive
+    ));
     configureButtonBindings();
   }
 
@@ -91,12 +106,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-     XboxController controller = new XboxController(ControllerConstants.controllerPort);
+     
      
     // JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
     // aButton.whenHeld(mShootBall);
 
-     JoystickButton bButton = new JoystickButton(controller, XboxController.Button.kB.value);
+    JoystickButton bButton = new JoystickButton(controller, XboxController.Button.kB.value);
     bButton.whenHeld(mIndexerCommand);
     JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
     aButton.whenHeld(mFeederCommand);
@@ -104,17 +119,34 @@ public class RobotContainer {
     xButton.whenHeld(mAcceleratorCommand);
     JoystickButton yButton = new JoystickButton(controller, XboxController.Button.kY.value);
     yButton.whenHeld(mShoot);
-    // JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
-    // JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
-    // leftBumper.whenHeld(mClimbUp);
-    // rightBumper.whenHeld(mClimbDown);     
+
+    JoystickButton backButton = new JoystickButton(controller, XboxController.Button.kStart.value);
+    backButton.whenHeld(mJog);
+
+    JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
+    JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
+    leftBumper.whenHeld(mUpstringUp);
+    rightBumper.whenHeld(mUpstringDown);
+    
+    JoystickButton down = new JoystickButton(controller, XboxController.Button.kStart.value);
+    down.whenHeld(mClimbDown);
+
+    JoystickButton navLeftBumper = new JoystickButton(navigator, XboxController.Button.kBumperLeft.value);
+    JoystickButton navRightBumper = new JoystickButton(navigator, XboxController.Button.kBumperRight.value);
+
+    navLeftBumper.whenHeld(mIntakeBalls);
+    navRightBumper.whenHeld(mOutakeBalls);
+
+    
+
+
   }
 
 
 
   public Command getAutonomousCommand(){
   
-    return m_autoCommand;
+    return mDriveForward;
   }
    /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

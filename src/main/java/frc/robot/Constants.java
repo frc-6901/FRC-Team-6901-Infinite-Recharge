@@ -24,21 +24,32 @@ public final class Constants {
     
   public static final class ControllerConstants {
       public static final int controllerPort = 0;
+      public static final int controllerPort2 = 1;
+  }
+
+  public static final class IntakeConstants {
+    public static final int kIntakePort = 10;
+    public static final double kIntakePower = -.45;
   }
   
   public static final class FeederConstants {
-    public static final int kIndexerPort = 10;
-    public static final int kAcceleratorWheelPort = 12;
+    public static final int kIndexerPort = 11;
+    public static final int kAcceleratorWheelPort = 13;
 
     public static final double kIndexerSpeed = -.35;
-    public static final double kAcceleratorSpeed = 0.1;
+    public static final double kAcceleratorSpeed = -1;
   }
   public static final class ClimberConstants {
-    public static final int kClimberPort1 = 2;
+    public static final int kClimberPort1 = 3;
     public static final int kClimberPort2 = 6;
-    public static final int kClimberPort3 = 11;
+    public static final int kClimberPort3 = 12;
     public static final int kClimberPort4 = 4;
 
+    
+    public static final int kUpstringPort = 8;
+
+    public static final double kUpstringPower = .4;
+    public static final double kClimberPower = .4;
   }
 
     
@@ -82,8 +93,8 @@ public final class Constants {
   }
 
   public static final class LimelightConstants {
-    public static final double kTargetHeight = 0;
-    public static final double kLimelightHeight = 0;
+    public static final double kTargetHeight = 89.75;
+    public static final double kLimelightHeight = 36.5;
     public static final double kLimelightAngle = 0;
 
     public static final double kXThreshold = 0;
@@ -96,10 +107,10 @@ public final class Constants {
       public static final double kP = 0;
       public static final double kD = 0;
 
-      public static final int kLeftMotor1Port = 1;
-      public static final int kLeftMotor2Port = 1;
-      public static final int kRightMotor1Port = 2;
-      public static final int kRightMotor2Port = 2;
+      public static final int kLeftMotor1Port = 2;
+      public static final int kLeftMotor2Port = 2;
+      public static final int kRightMotor1Port = 5;
+      public static final int kRightMotor2Port = 1;
       public static final int kPigeonPort = 0;
   
     public static final int[] kLeftEncoderPorts = new int[]{0, 1};
@@ -119,6 +130,7 @@ public final class Constants {
   
     public static final boolean kGyroReversed = true;
   
+    public static final int kMaxCurrent = 40;
       // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
       // These characterization values MUST be determined either experimentally or theoretically
       // for *your* robot's drive.
@@ -139,6 +151,9 @@ public final class Constants {
       // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
+
+    public static final double kAutonPower = .5;
+    public static final double kAutonLength = 1.5;
     }
 
 }
