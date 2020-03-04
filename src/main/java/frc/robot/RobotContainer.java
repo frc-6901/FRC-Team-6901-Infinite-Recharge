@@ -58,8 +58,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
   private final Shooter mShooter = new Shooter();
   //private final TuningShootBall mShootBall = new TuningShootBall(mShooter);
 
@@ -93,7 +91,7 @@ public class RobotContainer {
     // Configure the button bindings
 
     mRobotDrive.setDefaultCommand(new RunCommand ( () -> mRobotDrive
-      .arcadeDrive(-navigator.getY(GenericHID.Hand.kLeft) * .8, navigator.getX(GenericHID.Hand.kRight) * .8), mRobotDrive
+      .arcadeDrive(-navigator.getY(GenericHID.Hand.kLeft) * DriveConstants.kForwardModifier, navigator.getX(GenericHID.Hand.kRight) * DriveConstants.kTurnModifier), mRobotDrive
     ));
     configureButtonBindings();
   }
@@ -136,6 +134,8 @@ public class RobotContainer {
 
     navLeftBumper.whenHeld(mIntakeBalls);
     navRightBumper.whenHeld(mOutakeBalls);
+
+    //Button binds
 
     
 

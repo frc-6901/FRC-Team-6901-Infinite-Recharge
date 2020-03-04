@@ -103,6 +103,9 @@ public final class Constants {
     //TODO Modify Constants and also change inner classes
     public static final class DriveConstants {
 
+      public static final double kTurnModifier = .8; // Changes turn sensitivity
+      public static final double kForwardModifier = .8; // Changes forward/backwards sensitivity
+
       //Limelight tuning
       public static final double kP = 0;
       public static final double kD = 0;
