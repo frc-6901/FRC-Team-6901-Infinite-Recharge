@@ -36,8 +36,8 @@ public final class Constants {
     public static final int kIndexerPort = 11;
     public static final int kAcceleratorWheelPort = 13;
 
-    public static final double kIndexerSpeed = -.35;
-    public static final double kAcceleratorSpeed = -1;
+    public static final double kIndexerSpeed = .5;
+    public static final double kAcceleratorSpeed = -.35;
   }
   public static final class ClimberConstants {
     public static final int kClimberPort1 = 3;
@@ -73,8 +73,8 @@ public final class Constants {
       }
   
     //Ports
-    public static final int kShooterIdBottom = 1;
-    public static final int kShooterIdTop = 2;
+    public static final int kShooterIdBottom = 2;
+    public static final int kShooterIdTop = 1;
 
     //PIDF
     public static final double kP = .00005;
@@ -87,7 +87,7 @@ public final class Constants {
 
 
     // RPM Values
-    public static final int kRPMDifference = 500;
+    public static final int kRPMDifference = 1125;
     public static final int kDefaultRPM = -3500;
 
   }

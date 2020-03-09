@@ -135,14 +135,14 @@ public class Shooter extends SubsystemBase {
   public void variableRPMShooter(int RPM) {
 
     SmartDashboard.putNumber("Velocity Setpoint", RPM);
-    boolean bottomMotor = PIDShooterMotor(mBottomMotor, RPM);
+    boolean topMotor = PIDShooterMotor(mTopMotor, RPM);
     
     // Reduces RPM while maintaining signs
     double RPM2 = Math.abs(RPM) - ShooterConstants.kRPMDifference;
     if (RPM < 0) {
       RPM2 *= -1;
     } 
-    boolean topMotor = PIDShooterMotor(mTopMotor, RPM2);
+    boolean bottomMotor = PIDShooterMotor(mBottomMotor, RPM2);
     shooterAtSpeed = bottomMotor && topMotor;
   }
 
@@ -156,7 +156,7 @@ public class Shooter extends SubsystemBase {
    */
   public void tuningRPMShooter(int defaultRPM) {
     int RPMTarget = (int) SmartDashboard.getNumber("Velocity Setpoint", defaultRPM);
-    RPMShooter(RPMTarget);
+    variableRPMShooter(RPMTarget);
   }
 
   public boolean atSpeed() {
