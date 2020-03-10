@@ -69,13 +69,14 @@ public class RobotContainer {
    private final MoveUpstring mUpstringDown = new MoveUpstring(mClimber, false);
 
   private final Feeder mFeeder = new Feeder();
-  private final RunIndexer mIndexerCommand = new RunIndexer(mFeeder);
+  
   private final RunAccelerator mAcceleratorCommand = new RunAccelerator(mFeeder);
   private final RunFeeder mFeederCommand = new RunFeeder(mFeeder, false);
   private final RunFeeder mUnjamFeeder = new RunFeeder(mFeeder, true);
   
   private final Superstructure mSuperstructure = new Superstructure(mShooter, mFeeder, mLimelight);
   private final ShootBallCommand mShoot = new ShootBallCommand(mSuperstructure);
+  private final TuningShootBall mTuneShoot = new TuningShootBall(mSuperstructure);
   private final JogShooter mJog = new JogShooter(mShooter);
   
   private final Intake mIntake = new Intake();
@@ -115,7 +116,7 @@ public class RobotContainer {
     JoystickButton xButton = new JoystickButton(controller, XboxController.Button.kX.value);
     xButton.whenHeld(mAcceleratorCommand);
     JoystickButton yButton = new JoystickButton(controller, XboxController.Button.kY.value);
-    yButton.whenHeld(mShoot);
+    yButton.whenHeld(mTuneShoot);
 
     JoystickButton backButton = new JoystickButton(controller, XboxController.Button.kStart.value);
     backButton.whenHeld(mJog);

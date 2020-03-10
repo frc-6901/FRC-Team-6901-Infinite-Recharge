@@ -10,6 +10,8 @@ package frc.robot.commands;
 
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -17,17 +19,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 public class TuningShootBall extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Shooter mShooter;
+  private final Superstructure mSuperstructure;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public TuningShootBall(Shooter shooter) {
-    mShooter = shooter;
+  public TuningShootBall(Superstructure superstructure) {
+    mSuperstructure = superstructure;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(mShooter);
+    addRequirements(superstructure);
   }
 
   // Called when the command is initially scheduled.
@@ -38,7 +40,7 @@ public class TuningShootBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mShooter.tuningRPMShooter(ShooterConstants.kDefaultRPM);
+    mSuperstructure.shoot(SuperstructureState.TUNING_SHOOTER);
     //mShooter.runOpenLoop(.5);
     
   }
@@ -46,7 +48,7 @@ public class TuningShootBall extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      mShooter.stopShooter();
+      mSuperstructure.stop();
   }
 
   // Returns true when the command should end.
