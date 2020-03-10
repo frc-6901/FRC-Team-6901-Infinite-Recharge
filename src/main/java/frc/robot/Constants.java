@@ -103,7 +103,7 @@ public final class Constants {
     public static final double kLimelightHeight = 36.25;
     public static final double kLimelightAngle = 3;
 
-    public static final double kXThreshold = 0;
+    public static final double kXThreshold = 1;
 
   }
     //TODO Modify Constants and also change inner classes
@@ -163,6 +163,8 @@ public final class Constants {
 
     public static final double kAutonPower = .5;
     public static final double kAutonLength = 1.5;
+
+    public static final double kShooterLength = 5;
     }
 
 }
