@@ -35,6 +35,11 @@ public class Feeder extends SubsystemBase {
         runAccelerator();
     }
 
+    public void reverseFeeder() {
+        mAcceleratorWheel.set(ControlMode.PercentOutput, -FeederConstants.kAcceleratorSpeed);
+        mIndexerMotor.set(ControlMode.PercentOutput, -FeederConstants.kIndexerSpeed);
+    }
+
     public void stopFeeder() {
         mIndexerMotor.set(ControlMode.PercentOutput, 0);
         mAcceleratorWheel.set(ControlMode.PercentOutput, 0);

@@ -24,6 +24,7 @@ import frc.robot.commands.ClimbDownCommand;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.ShootBallCommand;
 import frc.robot.commands.TuningShootBall;
+import frc.robot.commands.TurnToTarget;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -31,6 +32,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.VisionController;
 
 import java.util.List;
 
@@ -57,6 +59,8 @@ import frc.robot.Constants.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Shooter mShooter = new Shooter();
+  private final VisionController mLimelight = VisionController.getInstance();
+  
   //private final TuningShootBall mShootBall = new TuningShootBall(mShooter);
 
    private final Climb mClimber = new Climb();
@@ -67,9 +71,10 @@ public class RobotContainer {
   private final Feeder mFeeder = new Feeder();
   private final RunIndexer mIndexerCommand = new RunIndexer(mFeeder);
   private final RunAccelerator mAcceleratorCommand = new RunAccelerator(mFeeder);
-  private final RunFeeder mFeederCommand = new RunFeeder(mFeeder);
+  private final RunFeeder mFeederCommand = new RunFeeder(mFeeder, false);
+  private final RunFeeder mUnjamFeeder = new RunFeeder(mFeeder, true);
   
-  private final Superstructure mSuperstructure = new Superstructure(mShooter, mFeeder);
+  private final Superstructure mSuperstructure = new Superstructure(mShooter, mFeeder, mLimelight);
   private final ShootBallCommand mShoot = new ShootBallCommand(mSuperstructure);
   private final JogShooter mJog = new JogShooter(mShooter);
   
@@ -79,6 +84,7 @@ public class RobotContainer {
 
   private final Drive mRobotDrive = new Drive(); 
   private final DriveForward mDriveForward = new DriveForward(mRobotDrive);
+  private final TurnToTarget mTurn = new TurnToTarget(mRobotDrive, mLimelight);
 
   private final XboxController controller = new XboxController(ControllerConstants.controllerPort);
   private final XboxController navigator = new XboxController(ControllerConstants.controllerPort2);
@@ -103,7 +109,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     JoystickButton bButton = new JoystickButton(controller, XboxController.Button.kB.value);
-    bButton.whenHeld(mIndexerCommand);
+    bButton.whenHeld(mUnjamFeeder);
     JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
     aButton.whenHeld(mFeederCommand);
     JoystickButton xButton = new JoystickButton(controller, XboxController.Button.kX.value);
@@ -125,8 +131,11 @@ public class RobotContainer {
     JoystickButton navLeftBumper = new JoystickButton(navigator, XboxController.Button.kBumperLeft.value);
     JoystickButton navRightBumper = new JoystickButton(navigator, XboxController.Button.kBumperRight.value);
 
-    navLeftBumper.whenHeld(mIntakeBalls);
-    navRightBumper.whenHeld(mOutakeBalls);
+    navLeftBumper.whenHeld(mOutakeBalls);
+    navRightBumper.whenHeld(mIntakeBalls);
+
+    JoystickButton navAButton = new JoystickButton(navigator, XboxController.Button.kA.value);
+    navAButton.whenHeld(mTurn);
   }
 
 

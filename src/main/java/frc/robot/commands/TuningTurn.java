@@ -7,28 +7,30 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.Superstructure.SuperstructureState;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.VisionController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class ShootBallCommand extends CommandBase {
+public class TuningTurn extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Superstructure mSuperstructure;
+  private final Drive mDrive;
+  private final VisionController mLimelight;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootBallCommand(Superstructure superstructure) {
-    mSuperstructure = superstructure;
+  public TuningTurn(Drive drive, VisionController limelight) {
+    mDrive = drive;
+    mLimelight = limelight;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(superstructure);
+    addRequirements(drive);
+    addRequirements(limelight);
   }
 
   // Called when the command is initially scheduled.
@@ -39,14 +41,13 @@ public class ShootBallCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mSuperstructure.shoot(SuperstructureState.LIMELIGHT_SHOOTING);  // make sure to update velocity setpoint
-
+      mDrive.arcadeDrive(0, mLimelight.tuneDriveLimelight());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      mSuperstructure.stop();
+      mDrive.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.

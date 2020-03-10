@@ -13,9 +13,9 @@ public class VisionController extends SubsystemBase{
     private boolean seesTarget = false;
     private double prevError = 0;
 
-    private VisionController mInstance = null;
+    private static VisionController mInstance = null;
 
-    public VisionController getInstance() {
+    public static VisionController getInstance() {
         if (mInstance == null) {
             mInstance = new VisionController();
         }
@@ -23,7 +23,8 @@ public class VisionController extends SubsystemBase{
         return mInstance;
     }
     private VisionController() {
-        
+        SmartDashboard.putNumber("kP", DriveConstants.kP);
+        SmartDashboard.putNumber("kD", DriveConstants.kD);
         
     }
 
@@ -80,7 +81,7 @@ public class VisionController extends SubsystemBase{
     public void periodic() {
         updateValues();
         SmartDashboard.putBoolean("Sees Target", seesTarget);
-        SmartDashboard.putNumber("Target X Error", limelightValues[0]);
+        SmartDashboard.putNumber("Target Y Error", limelightValues[1]);
         SmartDashboard.putNumber("Estimate Distance", estimateDistance());
         SmartDashboard.putNumber("Target RPM", getRPM());
     }
