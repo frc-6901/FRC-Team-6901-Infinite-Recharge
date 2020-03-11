@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.JogShooter;
+import frc.robot.commands.Longshot;
 import frc.robot.commands.MoveUpstring;
 import frc.robot.commands.RunAccelerator;
 import frc.robot.commands.RunFeeder;
@@ -78,7 +79,8 @@ public class RobotContainer {
   private final ShootBallCommand mShoot = new ShootBallCommand(mSuperstructure);
   private final TuningShootBall mTuneShoot = new TuningShootBall(mSuperstructure);
   private final JogShooter mJog = new JogShooter(mShooter);
-  
+  private final Longshot mLongShot = new Longshot(mSuperstructure);
+
   private final Intake mIntake = new Intake();
   private final RunIntake mIntakeBalls = new RunIntake(mIntake, true);
   private final RunIntake mOutakeBalls = new RunIntake(mIntake, false);
@@ -114,11 +116,11 @@ public class RobotContainer {
     JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
     aButton.whenHeld(mFeederCommand);
     JoystickButton xButton = new JoystickButton(controller, XboxController.Button.kX.value);
-    xButton.whenHeld(mAcceleratorCommand);
+    xButton.whenHeld(mLongShot);
     JoystickButton yButton = new JoystickButton(controller, XboxController.Button.kY.value);
-    yButton.whenHeld(mTuneShoot);
+    yButton.whenHeld(mShoot);
 
-    JoystickButton backButton = new JoystickButton(controller, XboxController.Button.kStart.value);
+    JoystickButton backButton = new JoystickButton(controller, XboxController.Button.kBack.value);
     backButton.whenHeld(mJog);
 
     JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
