@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Feeder;
@@ -71,6 +72,21 @@ public class Superstructure extends SubsystemBase {
             
             }
             break;
+        case LONG_SHOT:
+            switch(mShootingState) {
+                case 0:
+                    mShooter.longShot();
+                    if (mShooter.atSpeed()) {
+                        mShootingState++;
+                    } else {
+                        break;
+                    }
+                case 1:
+                    mFeeder.runFeeder();
+                    break;
+        
+            }
+            break;
         case TUNING_SHOOTER:
             switch(mShootingState) {
                 case 0:
@@ -87,24 +103,11 @@ public class Superstructure extends SubsystemBase {
         }
         
             break;
-        case LONG_SHOT:
-            switch(mShootingState) {
-                case 0:
-                    mShooter.variableRPMShooter(ShooterConstants.kLongShotRPM);
-                    if (mShooter.atSpeed()) {
-                        mShootingState++;
-                    } else {
-                        break;
-                    }
-                case 1:
-                    mFeeder.runFeeder();
-                    break;
-        
-            }
-            break;
         case LIMELIGHT_SHOOTING:
-            switch(mShootingState) {
+            switch (mShootingState) {
                 case 0:
+                    //int targetRPM = mLimelight.getRPM();
+                    //SmartDashboard.putNumber("Target RPMM", targetRPM);
                     mShooter.variableRPMShooter(mLimelight.getRPM());
                     if (mShooter.atSpeed()) {
                         mShootingState++;

@@ -37,7 +37,7 @@ public final class Constants {
     public static final int kAcceleratorWheelPort = 13;
 
     public static final double kIndexerSpeed = .5;
-    public static final double kAcceleratorSpeed = -.3;
+    public static final double kAcceleratorSpeed = -.32;
   }
   public static final class ClimberConstants {
     public static final int kClimberPort1 = 3;
@@ -59,7 +59,7 @@ public final class Constants {
       public static PolynomialRegression kPolynomial;
       
       public static double[][] kDistanceRPMTable = {
-        {111, -3000},
+        {110, -3000},
         {135, -3110},
         {165, -3200},
         {195, -3550},
@@ -96,10 +96,12 @@ public final class Constants {
 
 
     // RPM Values
-    public static final int kLongShotRPM = -4800;
+    public static final int kLongShotDiff = 750;
+    public static final int kLongShotRPM = -5000;
     
     public static final int kRPMDifference = 1250; //1250
     public static final int kDefaultRPM = -2900;
+
 
   }
 
