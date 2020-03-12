@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.JogShooter;
+import frc.robot.commands.LongShot;
 import frc.robot.commands.MoveUpstring;
 import frc.robot.commands.RunAccelerator;
 import frc.robot.commands.RunFeeder;
@@ -22,8 +23,10 @@ import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ShootAtInitiation;
 import frc.robot.commands.ClimbDownCommand;
+import frc.robot.commands.DefaultShot;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.ShootBallCommand;
+import frc.robot.commands.ShootTurnedAtInitiation;
 import frc.robot.commands.TuningShootBall;
 import frc.robot.commands.TurnToTarget;
 import frc.robot.subsystems.Climb;
@@ -81,8 +84,9 @@ public class RobotContainer {
   private final ShootBallCommand mShoot = new ShootBallCommand(mSuperstructure);
   private final TuningShootBall mTuneShoot = new TuningShootBall(mSuperstructure);
   private final JogShooter mJog = new JogShooter(mShooter);
-  
-  
+  private final DefaultShot mDefaultShot = new DefaultShot(mSuperstructure);
+  private final LongShot mLongShot = new LongShot(mSuperstructure);
+
   private final Intake mIntake = new Intake();
   private final RunIntake mIntakeBalls = new RunIntake(mIntake, true);
   private final RunIntake mOutakeBalls = new RunIntake(mIntake, false);
@@ -95,6 +99,7 @@ public class RobotContainer {
 
   private final ShootAtInitiation mShootAtInitiation = new ShootAtInitiation(mRobotDrive, mSuperstructure);
   private final DriveForward mDriveForward = new DriveForward(mRobotDrive);
+  private final ShootTurnedAtInitiation mShootTurnedAtInitiation = new ShootTurnedAtInitiation(mRobotDrive, mSuperstructure);
 
   private SendableChooser<Command> mChooser = new SendableChooser<>();
   /**
@@ -109,6 +114,7 @@ public class RobotContainer {
 
     mChooser.setDefaultOption("Drive Forward", mDriveForward);
     mChooser.addOption("Shoot at Initiation Line", mShootAtInitiation);
+    mChooser.addOption("Shoot turned at Initiation Line", mShootTurnedAtInitiation);
 
     Shuffleboard.getTab("Autonomous").add(mChooser);
 
@@ -128,12 +134,12 @@ public class RobotContainer {
     JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
     aButton.whenHeld(mFeederCommand);
     JoystickButton xButton = new JoystickButton(controller, XboxController.Button.kX.value);
-    xButton.whenHeld(mAcceleratorCommand);
+    xButton.whenHeld(mDefaultShot);
     JoystickButton yButton = new JoystickButton(controller, XboxController.Button.kY.value);
-    yButton.whenHeld(mTuneShoot);
+    yButton.whenHeld(mShoot);
 
-    JoystickButton backButton = new JoystickButton(controller, XboxController.Button.kStart.value);
-    backButton.whenHeld(mJog);
+    JoystickButton backButton = new JoystickButton(controller, XboxController.Button.kBack.value);
+    backButton.whenHeld(mLongShot);
 
     JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
     JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);

@@ -26,6 +26,7 @@ public class Superstructure extends SubsystemBase {
       IDLE,
       DEFAULT_SHOOTING,
       TUNING_SHOOTER,
+      LONG_SHOT,
       LIMELIGHT_SHOOTING
   }
 
@@ -44,6 +45,13 @@ public class Superstructure extends SubsystemBase {
       mState = SuperstructureState.IDLE;
   }
 
+  public Shooter getShooter() {
+      return mShooter;
+  }
+
+  public VisionController getLimelight() {
+      return mLimelight;
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -51,7 +59,7 @@ public class Superstructure extends SubsystemBase {
         case DEFAULT_SHOOTING:
             switch(mShootingState) {
                 case 0:
-                    mShooter.RPMShooter(ShooterConstants.kDefaultRPM);
+                    mShooter.variableRPMShooter(ShooterConstants.kDefaultRPM);
                     if (mShooter.atSpeed()) {
                         mShootingState++;
                     } else {
@@ -79,10 +87,25 @@ public class Superstructure extends SubsystemBase {
         }
         
             break;
+        case LONG_SHOT:
+            switch(mShootingState) {
+                case 0:
+                    mShooter.variableRPMShooter(ShooterConstants.kLongShotRPM);
+                    if (mShooter.atSpeed()) {
+                        mShootingState++;
+                    } else {
+                        break;
+                    }
+                case 1:
+                    mFeeder.runFeeder();
+                    break;
+        
+            }
+            break;
         case LIMELIGHT_SHOOTING:
             switch(mShootingState) {
                 case 0:
-                    mShooter.RPMShooter(mLimelight.getRPM());
+                    mShooter.variableRPMShooter(mLimelight.getRPM());
                     if (mShooter.atSpeed()) {
                         mShootingState++;
                     } else {

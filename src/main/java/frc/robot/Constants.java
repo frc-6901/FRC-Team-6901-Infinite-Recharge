@@ -59,13 +59,16 @@ public final class Constants {
       public static PolynomialRegression kPolynomial;
       
       public static double[][] kDistanceRPMTable = {
-        {140, -3100},
-        {103, -3000},
-        {125, -3050},
-        {188, -3300},
-        {205, -3400},
-        {260, -3700},
-        {360, -4200}
+        {111, -3000},
+        {135, -3110},
+        {165, -3200},
+        {195, -3550},
+        {250, -4010},
+        {220, -3700},
+        {275, -4110},
+        {300, -4250},
+        {340, -4350},
+        {373, -4450}
       };
 
       static {
@@ -93,8 +96,10 @@ public final class Constants {
 
 
     // RPM Values
+    public static final int kLongShotRPM = -4800;
+    
     public static final int kRPMDifference = 1250; //1250
-    public static final int kDefaultRPM = -3500;
+    public static final int kDefaultRPM = -2900;
 
   }
 
@@ -103,14 +108,14 @@ public final class Constants {
     public static final double kLimelightHeight = 36.25;
     public static final double kLimelightAngle = 3;
 
-    public static final double kXThreshold = 1;
+    public static final double kXThreshold = 1.5;
 
   }
     //TODO Modify Constants and also change inner classes
     public static final class DriveConstants {
 
-      public static final double kTurnModifier = .7; // Changes turn sensitivity
-      public static final double kForwardModifier = .8; // Changes forward/backwards sensitivity
+      public static final double kTurnModifier = .8; // Changes turn sensitivity
+      public static final double kForwardModifier = .85; // Changes forward/backwards sensitivity
 
       //Limelight tuning
       public static final double kP = 0.07;
