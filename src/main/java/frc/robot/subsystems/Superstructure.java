@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Feeder;
@@ -26,6 +27,7 @@ public class Superstructure extends SubsystemBase {
       IDLE,
       DEFAULT_SHOOTING,
       TUNING_SHOOTER,
+      LONG_SHOT,
       LIMELIGHT_SHOOTING
   }
 
@@ -44,6 +46,13 @@ public class Superstructure extends SubsystemBase {
       mState = SuperstructureState.IDLE;
   }
 
+  public Shooter getShooter() {
+      return mShooter;
+  }
+
+  public VisionController getLimelight() {
+      return mLimelight;
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -51,7 +60,7 @@ public class Superstructure extends SubsystemBase {
         case DEFAULT_SHOOTING:
             switch(mShootingState) {
                 case 0:
-                    mShooter.RPMShooter(ShooterConstants.kDefaultRPM);
+                    mShooter.variableRPMShooter(ShooterConstants.kDefaultRPM);
                     if (mShooter.atSpeed()) {
                         mShootingState++;
                     } else {
@@ -61,6 +70,21 @@ public class Superstructure extends SubsystemBase {
                     mFeeder.runFeeder();
                     break;
             
+            }
+            break;
+        case LONG_SHOT:
+            switch(mShootingState) {
+                case 0:
+                    mShooter.longShot();
+                    if (mShooter.atSpeed()) {
+                        mShootingState++;
+                    } else {
+                        break;
+                    }
+                case 1:
+                    mFeeder.runFeeder();
+                    break;
+        
             }
             break;
         case TUNING_SHOOTER:
@@ -80,9 +104,11 @@ public class Superstructure extends SubsystemBase {
         
             break;
         case LIMELIGHT_SHOOTING:
-            switch(mShootingState) {
+            switch (mShootingState) {
                 case 0:
-                    mShooter.RPMShooter(mLimelight.getRPM());
+                    //int targetRPM = mLimelight.getRPM();
+                    //SmartDashboard.putNumber("Target RPMM", targetRPM);
+                    mShooter.variableRPMShooter(mLimelight.getRPM());
                     if (mShooter.atSpeed()) {
                         mShootingState++;
                     } else {

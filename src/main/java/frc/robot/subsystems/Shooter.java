@@ -146,6 +146,21 @@ public class Shooter extends SubsystemBase {
     shooterAtSpeed = bottomMotor && topMotor;
   }
 
+  public void longShot() {
+
+    SmartDashboard.putNumber("Velocity Setpoint", ShooterConstants.kLongShotRPM);
+    boolean topMotor = PIDShooterMotor(mTopMotor, ShooterConstants.kLongShotRPM);
+    
+    // Reduces RPM while maintaining signs
+    double RPM2 = Math.abs(ShooterConstants.kLongShotRPM) - ShooterConstants.kLongShotDiff;
+    if (ShooterConstants.kLongShotRPM < 0) {
+      RPM2 *= -1;
+    } 
+    boolean bottomMotor = PIDShooterMotor(mBottomMotor, RPM2);
+    shooterAtSpeed = bottomMotor && topMotor;
+
+  }
+
   
 
   /**
