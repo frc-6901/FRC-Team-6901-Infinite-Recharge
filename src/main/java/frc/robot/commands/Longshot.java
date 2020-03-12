@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class Longshot extends CommandBase {
+public class LongShot extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Superstructure mSuperstructure;
 
@@ -25,7 +25,7 @@ public class Longshot extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public Longshot(Superstructure superstructure) {
+  public LongShot(Superstructure superstructure) {
     mSuperstructure = superstructure;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(superstructure);
@@ -39,7 +39,7 @@ public class Longshot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    mSuperstructure.shoot(SuperstructureState.LONG_SHOT);  // make sure to update velocity setpoint
+    mSuperstructure.shoot(SuperstructureState.LIMELIGHT_SHOOTING);  // make sure to update velocity setpoint
 
   }
 

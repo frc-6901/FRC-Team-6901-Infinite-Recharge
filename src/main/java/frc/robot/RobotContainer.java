@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.JogShooter;
-import frc.robot.commands.Longshot;
+import frc.robot.commands.LongShot;
 import frc.robot.commands.MoveUpstring;
 import frc.robot.commands.RunAccelerator;
 import frc.robot.commands.RunFeeder;
@@ -84,7 +84,7 @@ public class RobotContainer {
   private final ShootBallCommand mShoot = new ShootBallCommand(mSuperstructure);
   private final TuningShootBall mTuneShoot = new TuningShootBall(mSuperstructure);
   private final JogShooter mJog = new JogShooter(mShooter);
-  private final Longshot mLongShot = new Longshot(mSuperstructure);
+  private final LongShot mLongShot = new LongShot(mSuperstructure);
   private final DefaultShot mDefaultShot = new DefaultShot(mSuperstructure);
 
   private final Intake mIntake = new Intake();
