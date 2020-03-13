@@ -25,6 +25,7 @@ public final class Constants {
   public static final class ControllerConstants {
       public static final int controllerPort = 0;
       public static final int controllerPort2 = 1;
+      public static final double deadBand = .1;
   }
 
   public static final class IntakeConstants {

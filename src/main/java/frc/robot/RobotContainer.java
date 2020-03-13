@@ -10,9 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.JogShooter;
 import frc.robot.commands.LongShot;
@@ -55,6 +56,7 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.*;
+import frc.robot.XboxJoystickTrigger.Position;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -129,10 +131,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    JoystickButton bButton = new JoystickButton(controller, XboxController.Button.kB.value);
-    bButton.whenHeld(mUnjamFeeder);
-    JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
-    aButton.whenHeld(mFeederCommand);
+
+
+    Trigger downStick = new XboxJoystickTrigger(controller, Hand.kLeft, Position.DOWN);
+    downStick.whenActive(mUnjamFeeder);
+    Trigger upStick = new XboxJoystickTrigger(controller, Hand.kLeft, Position.UP);
+    upStick.whenActive  (mFeederCommand);
     JoystickButton xButton = new JoystickButton(controller, XboxController.Button.kX.value);
     xButton.whenHeld(mDefaultShot);
     JoystickButton yButton = new JoystickButton(controller, XboxController.Button.kY.value);
@@ -146,8 +150,8 @@ public class RobotContainer {
     leftBumper.whenHeld(mUpstringUp);
     rightBumper.whenHeld(mUpstringDown);
     
-    JoystickButton down = new JoystickButton(controller, XboxController.Button.kStart.value);
-    down.whenHeld(mClimbDown);
+    Trigger down = new XboxPOVButton(controller, XboxPOVButton.POVButton.DOWN);
+    down.whenActive(mClimbDown);
 
     JoystickButton navLeftBumper = new JoystickButton(navigator, XboxController.Button.kBumperLeft.value);
     JoystickButton navRightBumper = new JoystickButton(navigator, XboxController.Button.kBumperRight.value);
