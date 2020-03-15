@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class XboxTrigger extends Trigger {
-    XboxController mController;
-    Hand kHand;
+    private XboxController mController;
+    private Hand kHand;
     public XboxTrigger(XboxController controller, Hand hand) {
         mController = controller;
         kHand = hand;
