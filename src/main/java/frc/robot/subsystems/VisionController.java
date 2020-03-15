@@ -12,6 +12,7 @@ public class VisionController extends SubsystemBase{
     private double[] limelightValues = new double[2];
     private boolean seesTarget = false;
     private double prevError = 0;
+    private double kOutput = 0;
 
     private static VisionController mInstance = null;
 
@@ -25,6 +26,7 @@ public class VisionController extends SubsystemBase{
     private VisionController() {
         SmartDashboard.putNumber("kP", DriveConstants.kP);
         SmartDashboard.putNumber("kD", DriveConstants.kD);
+        
         
     }
 
@@ -50,16 +52,22 @@ public class VisionController extends SubsystemBase{
         return heightDistance / Math.tan(Math.toRadians(totalAngle));  
     }
 
+    public double tunedAlignmentOutput() {
+        return getDriveOutput(DriveConstants.kP, DriveConstants.kD);
+    }
+
     public double getDriveOutput(double kP, double kD) {
         double error = limelightValues[0];
-        double output = kP * error + kD * (error - prevError);
+        kOutput = kP * error + kD * (error - prevError);
         prevError = error;
-        return output;
+        
+        return kOutput;
     }
 
     public double tuneDriveLimelight() {
         double kP = SmartDashboard.getNumber("kP", DriveConstants.kP);
         double kD = SmartDashboard.getNumber("kD", DriveConstants.kD);
+         
         return getDriveOutput(kP, kD);
     }
 
@@ -68,7 +76,7 @@ public class VisionController extends SubsystemBase{
     }
 
     public boolean isAligned() {
-        return Math.abs(limelightValues[0]) <= LimelightConstants.kXThreshold && prevError == limelightValues[0]; // checks to see if it is aligned and not moving 
+        return Math.abs(kOutput) < LimelightConstants.kMinOutput; // checks to see if it is providing an output that doesn't move the robot 
     }
 
     public int getRPM() {
@@ -84,6 +92,7 @@ public class VisionController extends SubsystemBase{
         SmartDashboard.putNumber("Target Y Error", limelightValues[1]);
         SmartDashboard.putNumber("Estimate Distance", estimateDistance());
         SmartDashboard.putNumber("Target RPM", getRPM());
+        SmartDashboard.putNumber("Output", kOutput);
     }
 
 }

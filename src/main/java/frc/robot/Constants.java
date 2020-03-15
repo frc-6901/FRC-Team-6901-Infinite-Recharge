@@ -111,7 +111,7 @@ public final class Constants {
     public static final double kLimelightHeight = 36.25;
     public static final double kLimelightAngle = 3;
 
-    public static final double kXThreshold = 1.5;
+    public static final double kMinOutput = .2;
 
   }
     //TODO Modify Constants and also change inner classes

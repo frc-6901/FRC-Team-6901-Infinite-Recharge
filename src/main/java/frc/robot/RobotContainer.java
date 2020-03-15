@@ -24,6 +24,7 @@ import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ShootAtInitiation;
 import frc.robot.commands.ClimbDownCommand;
+import frc.robot.commands.CorrectHeading;
 import frc.robot.commands.DefaultShot;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.ShootBallCommand;
@@ -98,11 +99,13 @@ public class RobotContainer {
   private final RunIntake mIntakeBalls = new RunIntake(mIntake, true);
   private final RunIntake mOutakeBalls = new RunIntake(mIntake, false);
 
-  private final Drive mRobotDrive = new Drive(); 
-  private final TurnToTarget mTurn = new TurnToTarget(mRobotDrive, mLimelight);
-
   private final ControllerWrapper mOperator = new ControllerWrapper(ControllerConstants.controllerPort);
   private final ControllerWrapper mNavigator = new ControllerWrapper(ControllerConstants.controllerPort2);
+
+  private final Drive mRobotDrive = new Drive(); 
+  private final CorrectHeading mTurn = new CorrectHeading(mRobotDrive, mLimelight, mNavigator);
+
+ 
 
   private final ShootAtInitiation mShootAtInitiation = new ShootAtInitiation(mRobotDrive, mSuperstructure);
   private final DriveForward mDriveForward = new DriveForward(mRobotDrive);
