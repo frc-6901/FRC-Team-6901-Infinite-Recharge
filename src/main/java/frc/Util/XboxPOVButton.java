@@ -1,18 +1,18 @@
-package frc.robot;
+package frc.Util;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class XboxPOVButton extends Trigger {
     private XboxController mXboxController;
-    private POVButton mButton;
+    private Arrow mButton;
 
-    public XboxPOVButton (XboxController xboxController, POVButton button) {
+    public XboxPOVButton(XboxController xboxController, Arrow button) {
         mButton = button;
         mXboxController = xboxController;
     }
 
-    public enum POVButton {
+    public enum Arrow {
         UP,
         RIGHT,
         LEFT,

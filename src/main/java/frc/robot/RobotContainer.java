@@ -30,7 +30,9 @@ import frc.robot.commands.ShootBallCommand;
 import frc.robot.commands.ShootTurnedAtInitiation;
 import frc.robot.commands.TuningShootBall;
 import frc.robot.commands.TurnToTarget;
+import frc.robot.commands.VibrateController;
 import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.ControllerWrapper;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Feeder;
@@ -56,7 +58,10 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.*;
-import frc.robot.XboxJoystickTrigger.Position;
+import frc.Util.*;
+import frc.Util.XboxJoystickTrigger.Position;
+import frc.Util.XboxPOVButton.Arrow;
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -96,12 +101,14 @@ public class RobotContainer {
   private final Drive mRobotDrive = new Drive(); 
   private final TurnToTarget mTurn = new TurnToTarget(mRobotDrive, mLimelight);
 
-  private final XboxController controller = new XboxController(ControllerConstants.controllerPort);
-  private final XboxController navigator = new XboxController(ControllerConstants.controllerPort2);
+  private final ControllerWrapper mOperator = new ControllerWrapper(ControllerConstants.controllerPort);
+  private final ControllerWrapper mNavigator = new ControllerWrapper(ControllerConstants.controllerPort2);
 
   private final ShootAtInitiation mShootAtInitiation = new ShootAtInitiation(mRobotDrive, mSuperstructure);
   private final DriveForward mDriveForward = new DriveForward(mRobotDrive);
   private final ShootTurnedAtInitiation mShootTurnedAtInitiation = new ShootTurnedAtInitiation(mRobotDrive, mSuperstructure);
+
+  private final VibrateController mVibrateOperator = new VibrateController(mOperator);
 
   private SendableChooser<Command> mChooser = new SendableChooser<>();
   /**
@@ -111,7 +118,7 @@ public class RobotContainer {
     // Configure the button bindings
 
     mRobotDrive.setDefaultCommand(new RunCommand ( () -> mRobotDrive
-      .arcadeDrive(navigator.getY(GenericHID.Hand.kLeft) * DriveConstants.kForwardModifier, navigator.getX(GenericHID.Hand.kRight) * DriveConstants.kTurnModifier), mRobotDrive
+      .arcadeDrive(mNavigator.getY(GenericHID.Hand.kLeft) * DriveConstants.kForwardModifier, mNavigator.getX(GenericHID.Hand.kRight) * DriveConstants.kTurnModifier), mRobotDrive
     ));
 
     mChooser.setDefaultOption("Drive Forward", mDriveForward);
@@ -133,34 +140,40 @@ public class RobotContainer {
 
 
 
-    Trigger downStick = new XboxJoystickTrigger(controller, Hand.kLeft, Position.DOWN);
+    Trigger downStick = mOperator.getJoystickTrigger(Hand.kLeft, Position.DOWN);
     downStick.whenActive(mUnjamFeeder);
-    Trigger upStick = new XboxJoystickTrigger(controller, Hand.kLeft, Position.UP);
+    Trigger upStick = mOperator.getJoystickTrigger(Hand.kLeft, Position.UP);
     upStick.whenActive  (mFeederCommand);
-    JoystickButton xButton = new JoystickButton(controller, XboxController.Button.kX.value);
+    JoystickButton xButton = new JoystickButton(mOperator.getController(), XboxController.Button.kX.value);
     xButton.whenHeld(mDefaultShot);
-    JoystickButton yButton = new JoystickButton(controller, XboxController.Button.kY.value);
+    JoystickButton yButton = new JoystickButton(mOperator.getController(), XboxController.Button.kY.value);
     yButton.whenHeld(mShoot);
 
-    JoystickButton backButton = new JoystickButton(controller, XboxController.Button.kBack.value);
+    JoystickButton backButton = new JoystickButton(mOperator.getController(), XboxController.Button.kBack.value);
     backButton.whenHeld(mLongShot);
 
-    JoystickButton leftBumper = new JoystickButton(controller, XboxController.Button.kBumperLeft.value);
-    JoystickButton rightBumper = new JoystickButton(controller, XboxController.Button.kBumperRight.value);
+    JoystickButton leftBumper = new JoystickButton(mOperator.getController(), XboxController.Button.kBumperLeft.value);
+    JoystickButton rightBumper = new JoystickButton(mOperator.getController(), XboxController.Button.kBumperRight.value);
     leftBumper.whenHeld(mUpstringUp);
     rightBumper.whenHeld(mUpstringDown);
     
-    Trigger down = new XboxPOVButton(controller, XboxPOVButton.POVButton.DOWN);
+    Trigger down = mOperator.getXboxPOV(Arrow.DOWN);
     down.whenActive(mClimbDown);
 
-    JoystickButton navLeftBumper = new JoystickButton(navigator, XboxController.Button.kBumperLeft.value);
-    JoystickButton navRightBumper = new JoystickButton(navigator, XboxController.Button.kBumperRight.value);
+    JoystickButton navLeftBumper = new JoystickButton(mNavigator.getController(), XboxController.Button.kBumperLeft.value);
+    JoystickButton navRightBumper = new JoystickButton(mNavigator.getController(), XboxController.Button.kBumperRight.value);
 
     navLeftBumper.whenHeld(mOutakeBalls);
     navRightBumper.whenHeld(mIntakeBalls);
 
-    JoystickButton navAButton = new JoystickButton(navigator, XboxController.Button.kA.value);
+    JoystickButton navAButton = new JoystickButton(mNavigator.getController(), XboxController.Button.kA.value);
     navAButton.whenHeld(mTurn);
+
+
+    // Internal robot triggers
+    Trigger isAligned = new Trigger(() -> mLimelight.isAligned());
+    isAligned.whenActive(mVibrateOperator);
+
   }
 
 
