@@ -36,7 +36,7 @@ public class ControllerWrapper extends SubsystemBase {
     }
 
     public Trigger getJoystickTrigger(Hand hand, Position position) {
-        return new XboxJoystickTrigger(mController, hand, position);
+        return new XboxJoystickTrigger(this, hand, position);
     }
 
     public Trigger getXboxPOV(Arrow pov) {
