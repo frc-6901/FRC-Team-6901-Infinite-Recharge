@@ -16,18 +16,15 @@ public class Feeder extends SubsystemBase {
 
     public Feeder() {
         mIndexerMotor = new VictorSPX(FeederConstants.kIndexerPort);
-        mAcceleratorWheel = new VictorSPX(FeederConstants.kAcceleratorWheelPort);
-        //mIndexerMotor2 = new VictorSPX(ClimberConstants.kClimberPort3);
-        
+        mAcceleratorWheel = new VictorSPX(FeederConstants.kAcceleratorWheelPort);   
     }
 
     public void runIndexer() {
-        mIndexerMotor.set(ControlMode.PercentOutput, FeederConstants.kIndexerSpeed);
-        //mIndexerMotor2.set(ControlMode.PercentOutput, power);
+        mIndexerMotor.set(ControlMode.Current, FeederConstants.kIndexerVolts);
     }
 
     public void runAccelerator() {
-        mAcceleratorWheel.set(ControlMode.PercentOutput, FeederConstants.kAcceleratorSpeed);
+        mAcceleratorWheel.set(ControlMode.Current, -FeederConstants.kAcceleratorVolts);
     }
 
     public void runFeeder() {
@@ -36,12 +33,12 @@ public class Feeder extends SubsystemBase {
     }
 
     public void reverseFeeder() {
-        mAcceleratorWheel.set(ControlMode.PercentOutput, -FeederConstants.kAcceleratorSpeed);
-        mIndexerMotor.set(ControlMode.PercentOutput, -FeederConstants.kIndexerSpeed);
+        mAcceleratorWheel.set(ControlMode.Current, FeederConstants.kAcceleratorVolts);
+        mIndexerMotor.set(ControlMode.Current, -FeederConstants.kIndexerVolts);
     }
 
     public void stopFeeder() {
-        mIndexerMotor.set(ControlMode.PercentOutput, 0);
-        mAcceleratorWheel.set(ControlMode.PercentOutput, 0);
+        mIndexerMotor.set(ControlMode.Current, 0);
+        mAcceleratorWheel.set(ControlMode.Current, 0);
     }
 }

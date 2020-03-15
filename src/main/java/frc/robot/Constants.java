@@ -37,8 +37,8 @@ public final class Constants {
     public static final int kIndexerPort = 11;
     public static final int kAcceleratorWheelPort = 13;
 
-    public static final double kIndexerSpeed = .5;
-    public static final double kAcceleratorSpeed = -.32;
+    public static final double kIndexerVolts = 4;
+    public static final double kAcceleratorVolts = 2;
   }
   public static final class ClimberConstants {
     public static final int kClimberPort1 = 3;
